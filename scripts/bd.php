@@ -46,6 +46,35 @@
 		$stmt->close();
 		$mysqli->close();
 		
+	}
+
+	function alterarUsuario($usuario) {
+
+		$sql = "UPDATE usuarios SET (nome, email, senha, nivel, ativo) 
+		VALUES (?, ?, ?, ?, ?);";
+		
+		$stmt = $mysqli->prepare($sql);
+
+		if(!$stmt) {
+			throw new Exception($mysqli->errno .', ' . $mysqli->error);
+		}
+
+		$stmt->bind_param('ssssi',
+			$usuario->nome,
+			$usuario->email,
+			$usuario->senha,
+			$usuario->nivel,
+			$usuario->ativo);		
+		
+		$ok = $stmt->execute();
+		
+		if(!$ok) {			
+			throw new Exception($mysqli->errno .', ' . $mysqli->error);
+		}
+
+		$stmt->close();
+		$mysqli->close();
+
 	}	
 
 	//TODO: Armazenar senha em HASH e valida senha usando HASH
