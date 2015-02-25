@@ -1,6 +1,6 @@
 <?php
 
-$idAvaliacao = 1;//$_POST['id'];
+$idAvaliacao = $_POST['id'];
 
 $mysqli = new mysqli('localhost','root','','avaltreinamento');
 			
