@@ -1,6 +1,6 @@
 <?php
 
-$idAvaliacao = 1;
+$idAvaliacao = 1;//$_POST['id'];
 
 $mysqli = new mysqli('localhost','root','','avaltreinamento');
 			
@@ -10,7 +10,7 @@ $mysqli = new mysqli('localhost','root','','avaltreinamento');
 			
 	else{
 		mysqli_set_charset($mysqli, 'utf8');
-		$sql = "select * from aval where id = 1 ";
+		$sql = "select * from aval where id = $idAvaliacao ";
 		$query = $mysqli->query($sql);
 
 		if($query){
@@ -19,7 +19,7 @@ $mysqli = new mysqli('localhost','root','','avaltreinamento');
 	
 							echo 'Nome: ' . $dados['nome'] . '<br>';
 					
-							echo 'Data de criação: ' . $dados['dt_criacao'] . '<br>';
+							echo 'Data de crição: ' . $dados['dt_criacao'] . '<br>';
 							
 							echo 'Descrição: ' . $dados['descricao'] . '<br>';
 							
