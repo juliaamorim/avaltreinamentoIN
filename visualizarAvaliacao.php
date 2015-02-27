@@ -1,6 +1,6 @@
 <?php
 
-$idAvaliacao = $_POST['id'];
+$idAvaliacao = $_REQUEST['id'];
 
 $mysqli = new mysqli('localhost','root','','avaltreinamento');
 			
@@ -22,8 +22,15 @@ $mysqli = new mysqli('localhost','root','','avaltreinamento');
 							echo 'Data de crição: ' . $dados['dt_criacao'] . '<br>';
 							
 							echo 'Descrição: ' . $dados['descricao'] . '<br>';
+
+							//apresentar de forma melhor se a avaliação está em aberto
+							if ($dados['aberta']==0) {
+								$strMsg = "concluída";
+							}else
+								$strMsg ="aberta para novas avaliações";
+							//apresentar de forma melhor se a avaliação está em aberto
 							
-							echo 'aberta: ' . $dados['aberta'] . '<br>';							
+							echo 'situação de avaliação: ' . $strMsg . '<br>';							
 
 							echo '<br><br>';
 						}
