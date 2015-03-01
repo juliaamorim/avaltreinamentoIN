@@ -1,5 +1,5 @@
 <?php
-
+require 'layoutUp.php';
 $idAvaliacao = $_REQUEST['id'];
 
 $mysqli = new mysqli('localhost','root','','avaltreinamento');
@@ -43,9 +43,6 @@ $mysqli = new mysqli('localhost','root','','avaltreinamento');
 
 	}	
 
-
-
-
-
+	require 'layoutDown.php';
 
 ?>

@@ -63,4 +63,56 @@
 		header('Location: index.php');
 	}
 
+	
+	//função para enviar menssagens. para enviar uma menssagem por ela, basta setar a menssagem e seu tipo no caso de uso anteriro por meio da função setaMenssagem()
+	function imprimeMenssagem(){
+		//testa se tem alguma mensagem, se tiver, printa
+		if(isset($_SESSION['msg']) && isset($_SESSION['tipo'])){
+			$classe = "";
+			switch($_SESSION['tipo']){
+				case "info":
+					$classe = "info";
+					break;
+				case "sucesso":
+					$classe = "sucesso";
+					break;
+				case "erro":
+					$classe = "erro";
+					break;
+			}
+				
+			?>
+				<div class="<?php=$classe?>">
+					<?php
+					switch($_SESSION['tipo'])
+					{
+						case "info":
+							echo "<strong>Info:</strong><br />" . $_SESSION['msg'];
+							break;
+						case "sucesso":
+							echo "<strong>Successo:</strong><br />" . $_SESSION['msg'];
+							break;
+						case "erro":
+							echo "<strong>Erro:</strong><br />" . $_SESSION['msg'];
+							break;
+					}
+					?>
+				</div>
+			<?php
+
+			unset($_SESSION['msg']);
+			unset($_SESSION['tipo']);
+		}
+	}
+	
+	//essa função serve para setar menssagem e seu tipo. menssagem essa que será impressa no proximo caso de uso em que o usuário entrar através da função anterior, imprimeMenssagem()
+	function setaMenssagem($strMenssagem, $strTipo){
+		$_SESSION['tipo'] = strTipo;
+		$_SESSION['msg'] = strMenssagem;
+	}
+	
+	
+	
+	
+	
 ?>
