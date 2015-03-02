@@ -47,10 +47,6 @@
 			}else{
 				$mysqli = bd_conecta();
 
-				//Cria comando SQL
-				$stmt = $msqli->prepare("INSERT INTO empresas (id_empresa, nome, ativa) VALUES (?, ?, ?)");
-				$stmt->bind_param("isi", $id_empresa, $nome, $ativa);
-
 				$id_empresa = default;
 				$nome = $strNome;
 				
@@ -59,6 +55,10 @@
 				}else{
 					$ativa = 0;
 				}
+
+				//Cria comando SQL
+				$stmt = $msqli->prepare("INSERT INTO empresas (id_empresa, nome, ativa) VALUES (?, ?, ?)");
+				$stmt->bind_param("isi", $id_empresa, $nome, $ativa);
 
 				$stmt->execute();
 
