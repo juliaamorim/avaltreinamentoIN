@@ -1,5 +1,60 @@
+<!DOCTYPE html>
 <?php
 	require_once('scripts/session.php');
+	require_once('scripts/bd.php');
+
+	class Usuario {
+		public $strNome;
+		public $strEmail;
+		public $strNivel;
+		public $intIdEmpresa;
+		public $intAtivo;
+	}
+
+	//TODO: Armazenar senha em HASH e valida senha usando HASH
+	function buscaUsuario($strEmail, $strSenha) {
+		$objUsuario = null;
+		$objMysqli = bd_conecta();
+		
+		//Cria comando SQL
+		$strSQL = 'SELECT nome, email, nivel, id_empresa, ativo FROM usuarios WHERE email = ? AND senha = ?;';
+             
+        if ($objStmt = $objMysqli->prepare($strSQL)) {
+        	//Preenche parâmetros SQL de forma segura
+			$objStmt->bind_param('ss',$strEmail,$strSenha);
+
+			//Executa query SQL
+			if ($objStmt->execute()) {
+				$objUsuario = new Usuario();
+
+				//Configura em que variáveis serão guardados os retornos da query
+				$objStmt->bind_result(
+					$objUsuario->strNome,
+					$objUsuario->strEmail,
+					$objUsuario->strNivel,
+					$objUsuario->intIdEmpresa,
+					$objUsuario->intAtivo);
+
+				//Se não houve retorno (não achou usuario), então $objUsuario = null
+				if( !$objStmt->fetch() ) {
+					$objUsuario = null;
+				}
+			}
+
+			$objStmt->close();
+        }
+
+        //Se ocorreu algum erro, mostra mensagem de erro.
+        if($objMysqli->errno) {
+        	throw new Exception($objMysqli->errno .', ' . $objMysqli->error);
+        }
+
+		//Finaliza conexão ao BD		
+		$objMysqli->close();
+
+		//Retorna objeto $objUsuario
+		return $objUsuario;
+	}
 	
 	//Se já estiver logado, então pula tudo isso e simplesmente mostra sua Home
 	//Se não está logado, entra nesse if e verifica se houve tentativa de login (o usuário está vindo do formulário de login)
@@ -11,8 +66,7 @@
 
 		//Tentativa de login
 		if ( $strEmail && $strSenha) {
-			require_once('scripts/bd.php');
-			$objUsuario = bd_buscaUsuario($strEmail, $strSenha);
+			$objUsuario = buscaUsuario($strEmail, $strSenha);
 
 			//Se $usuario é null, então email e/ou senha são inválidos
 			if ( is_null($objUsuario) ) {
@@ -37,7 +91,6 @@
 	}
 	
 ?>
-<!DOCTYPE html>
 <html lang="pt-BR">
 	<head>
 		<title>SAT - Sistema de Avaliação de Treinamento</title>
