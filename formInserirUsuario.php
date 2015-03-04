@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
-	require_once('scripts/session.php');
-	require_once('scripts/bd.php');
+	require_once('scripts/functions.php');
+	
 	//Acesso permitido somente a usuários de nível adminGeral ou adminDeus
 	session_validaLoginRedirect('adminGeral','adminDeus');
 

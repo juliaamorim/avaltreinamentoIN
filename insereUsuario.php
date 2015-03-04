@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php
-	require_once('scripts/session.php');
-	require_once('scripts/bd.php');
+	require_once('scripts/functions.php');
 
 	class Usuario {
 		public $strNome;

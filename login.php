@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-	require_once('scripts/session.php');
+	require_once('scripts/functions.php');
 ?>
 <html lang="pt-BR">
 	<head>

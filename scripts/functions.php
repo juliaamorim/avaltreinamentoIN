@@ -4,6 +4,19 @@
 		session_start();
 	}
 
+	//Cria conexão ao banco de dados e retorna o objeto de link
+	function bd_conecta() {
+		$objMysqli = new mysqli('localhost','root','injunior','avaltreinamento');
+		
+		if ($objMysqli->connect_errno){
+			die('Falha na conexão ao banco de dados: '.mysqli_connect_error());
+		}
+		
+		$objMysqli->set_charset('latin1_swedish_ci');
+
+		return $objMysqli;
+	}
+
 	/*
 	Descrição:
 	Esta função verifica se o usuário está logado.
