@@ -6,30 +6,30 @@
 	//Se não está logado e não houve tentativa de login, então pula isso e mostra a Home para usuário anônimo
 	if(!session_validaLogin()) {
 		//Pega login e senha passados pelo formulário de login
-		$email = (isset($_POST['email']) ? $_POST['email'] : null);		
-		$senha = (isset($_POST['senha']) ? $_POST['senha'] : null);
+		$strEmail = (isset($_POST['email']) ? $_POST['email'] : null);		
+		$strSenha = (isset($_POST['senha']) ? $_POST['senha'] : null);
 
 		//Tentativa de login
-		if ( $email && $senha) {
+		if ( $strEmail && $strSenha) {
 			require_once('scripts/bd.php');
-			$usuario = bd_buscaUsuario($email, $senha);
+			$objUsuario = bd_buscaUsuario($strEmail, $strSenha);
 
 			//Se $usuario é null, então email e/ou senha são inválidos
-			if ( is_null($usuario) ) {
+			if ( is_null($objUsuario) ) {
 				session_printWelcomeMessage();
 				echo '<br/><br/>';
 				die('Email e/ou senha inválidos.');
 			}
 			else {				
-				$_SESSION['nome'] = $usuario->nome;
-				$_SESSION['email'] = $usuario->email;
-				$_SESSION['nivel'] = $usuario->nivel;
-				$_SESSION['id_empresa'] = $usuario->id_empresa;
-				$_SESSION['ativo'] = $usuario->ativo;
+				$_SESSION['nome'] = $objUsuario->strNome;
+				$_SESSION['email'] = $objUsuario->strEmail;
+				$_SESSION['nivel'] = $objUsuario->strNivel;
+				$_SESSION['id_empresa'] = $objUsuario->intIdEmpresa;
+				$_SESSION['ativo'] = $objUsuario->intAtivo;
 			}
 		}
 		//Preencheu somente um campo do formulário de login
-		else if ( $email || $senha) {
+		else if ( $strEmail || $strSenha) {
 			session_printWelcomeMessage();
 			echo '<br/><br/>';
 			die('Todos os campos do formulário de login são obrigatórios.');

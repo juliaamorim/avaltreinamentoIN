@@ -1,7 +1,7 @@
+<!DOCTYPE html>
 <?php
 	require_once('scripts/session.php');
 ?>
-<!DOCTYPE html>
 <html lang="pt-BR">
 	<head>
 		<title>Login SAT</title>

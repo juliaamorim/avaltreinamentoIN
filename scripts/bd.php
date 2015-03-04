@@ -2,173 +2,173 @@
 
 	//Cria conexão ao banco de dados e retorna o objeto de link
 	function bd_conecta() {
-		$mysqli = new mysqli('localhost','root','injunior','avaltreinamento');
+		$objMysqli = new mysqli('localhost','root','injunior','avaltreinamento');
 		
-		if ($mysqli->connect_errno){
+		if ($objMysqli->connect_errno){
 			die('Falha na conexão ao banco de dados: '.mysqli_connect_error());
 		}
 		
-		$mysqli->set_charset('latin1_swedish_ci');
+		$objMysqli->set_charset('latin1_swedish_ci');
 
-		return $mysqli;
+		return $objMysqli;
 	}
 
 	//Caso de Uso: Inserir Usuário
 	//TODO: Armazenar senha em HASH e valida senha usando HASH
-	function bd_insereUsuario($usuario) {
-		$mysqli = bd_conecta();
+	function bd_insereUsuario($objUsuario) {
+		$objMysqli = bd_conecta();
 		
 		//Cria comando SQL
-		$sql = 'INSERT INTO usuarios(nome,email,senha,nivel,id_empresa,ativo)'.'VALUES (?,?,?,?,?,?);';
-		$stmt = $mysqli->prepare($sql);
+		$strSQL = 'INSERT INTO usuarios(nome,email,senha,nivel,id_empresa,ativo)'.'VALUES (?,?,?,?,?,?);';
+		$objStmt = $objMysqli->prepare($strSQL);
 
 		//Informa mensagem de erro na criação do comando SQL
-		if(!$stmt) {
-			throw new Exception($mysqli->errno .', ' . $mysqli->error);
+		if(!$objStmt) {
+			throw new Exception($objMysqli->errno .', ' . $objMysqli->error);
 		}
 
 		//Preenche parâmetros SQL de forma segura
-		$stmt->bind_param('ssssii',
-			$usuario->nome,
-			$usuario->email,
-			$usuario->senha,
-			$usuario->nivel,
-			$usuario->id_empresa,
-			$usuario->ativo);		
-		$ok = $stmt->execute();
+		$objStmt->bind_param('ssssii',
+			$objUsuario->strNome,
+			$objUsuario->strEmail,
+			$objUsuario->strSenha,
+			$objUsuario->strNivel,
+			$objUsuario->intIdEmpresa,
+			$objUsuario->intAtivo);		
+		$ok = $objStmt->execute();
 		
 		//Tratamento do resultado da operação
 		if(!$ok) {			
-			throw new Exception($mysqli->errno .', ' . $mysqli->error);
+			throw new Exception($objMysqli->errno .', ' . $objMysqli->error);
 		}
 		
 		//Finaliza conexão ao BD
-		$stmt->close();
-		$mysqli->close();
+		$objStmt->close();
+		$objMysqli->close();
 		
 	}
 
-	function alterarUsuario($usuario) {
+	function alterarUsuario($objUsuario) {
 
-		$sql = "UPDATE usuarios SET (nome, email, senha, nivel, ativo) 
+		$strSQL = "UPDATE usuarios SET (nome, email, senha, nivel, ativo) 
 		VALUES (?, ?, ?, ?, ?);";
 		
-		$stmt = $mysqli->prepare($sql);
+		$objStmt = $objMysqli->prepare($strSQL);
 
-		if(!$stmt) {
-			throw new Exception($mysqli->errno .', ' . $mysqli->error);
+		if(!$objStmt) {
+			throw new Exception($objMysqli->errno .', ' . $objMysqli->error);
 		}
 
-		$stmt->bind_param('ssssi',
-			$usuario->nome,
-			$usuario->email,
-			$usuario->senha,
-			$usuario->nivel,
-			$usuario->ativo);		
+		$objStmt->bind_param('ssssi',
+			$objUsuario->strNome,
+			$objUsuario->strEmail,
+			$objUsuario->strSenha,
+			$objUsuario->strNivel,
+			$objUsuario->intAtivo);		
 		
-		$ok = $stmt->execute();
+		$ok = $objStmt->execute();
 		
 		if(!$ok) {			
-			throw new Exception($mysqli->errno .', ' . $mysqli->error);
+			throw new Exception($objMysqli->errno .', ' . $objMysqli->error);
 		}
 
-		$stmt->close();
-		$mysqli->close();
+		$objStmt->close();
+		$objMysqli->close();
 
 	}	
 
 	//TODO: Armazenar senha em HASH e valida senha usando HASH
-	function bd_buscaUsuario($email, $senha) {
-		$usuario = null;
-		$mysqli = bd_conecta();
+	function bd_buscaUsuario($strEmail, $strSenha) {
+		$objUsuario = null;
+		$objMysqli = bd_conecta();
 		
 		//Cria comando SQL
-		$sql = 'SELECT nome, email, nivel, id_empresa, ativo FROM usuarios WHERE email = ? AND senha = ?;';
+		$strSQL = 'SELECT nome, email, nivel, id_empresa, ativo FROM usuarios WHERE email = ? AND senha = ?;';
              
-        if ($stmt = $mysqli->prepare($sql)) {
+        if ($objStmt = $objMysqli->prepare($strSQL)) {
         	//Preenche parâmetros SQL de forma segura
-			$stmt->bind_param('ss',$email,$senha);
+			$objStmt->bind_param('ss',$strEmail,$strSenha);
 
 			//Executa query SQL
-			if ($stmt->execute()) {
-				$usuario = new Usuario();
+			if ($objStmt->execute()) {
+				$objUsuario = new Usuario();
 
 				//Configura em que variáveis serão guardados os retornos da query
-				$stmt->bind_result(
-					$usuario->nome,
-					$usuario->email,
-					$usuario->nivel,
-					$usuario->id_empresa,
-					$usuario->ativo);
+				$objStmt->bind_result(
+					$objUsuario->strNome,
+					$objUsuario->strEmail,
+					$objUsuario->strNivel,
+					$objUsuario->intIdEmpresa,
+					$objUsuario->intAtivo);
 
-				//Se não houve retorno (não achou usuario), então $usuario = null
-				if( !$stmt->fetch() ) {
-					$usuario = null;
+				//Se não houve retorno (não achou usuario), então $objUsuario = null
+				if( !$objStmt->fetch() ) {
+					$objUsuario = null;
 				}
 			}
 
-			$stmt->close();
+			$objStmt->close();
         }
 
         //Se ocorreu algum erro, mostra mensagem de erro.
-        if($mysqli->errno) {
-        	throw new Exception($mysqli->errno .', ' . $mysqli->error);
+        if($objMysqli->errno) {
+        	throw new Exception($objMysqli->errno .', ' . $objMysqli->error);
         }
 
 		//Finaliza conexão ao BD		
-		$mysqli->close();
+		$objMysqli->close();
 
-		//Retorna objeto $usuario
-		return $usuario;
+		//Retorna objeto $objUsuario
+		return $objUsuario;
 	}
 
 	function bd_printOptionsEmpresas() {
-		$mysqli = bd_conecta();
+		$objMysqli = bd_conecta();
 		
 		//Cria comando SQL
-		$sql = 'SELECT id, nome FROM empresas;';
+		$strSQL = 'SELECT id, nome FROM empresas;';
              
-        if ($stmt = $mysqli->prepare($sql)) {
+        if ($objStmt = $objMysqli->prepare($strSQL)) {
         	
 			//Executa query SQL
-			if ($stmt->execute()) {
-				$empresa = new Empresa();
+			if ($objStmt->execute()) {
+				$objEmpresa = new Empresa();
 
 				//Configura em que variáveis serão guardados os retornos da query
-				$stmt->bind_result(
-					$empresa->id,
-					$empresa->nome);
+				$objStmt->bind_result(
+					$objEmpresa->intId,
+					$objEmpresa->strNome);
 				
 				//Para cada empresa no banco de dados, imprime uma opção para ela
-				while( $stmt->fetch() ) {
-					echo '<option value="'.$empresa->id.'">'.$empresa->nome.'</option>';
+				while( $objStmt->fetch() ) {
+					echo '<option value="'.$objEmpresa->intId.'">'.$objEmpresa->strNome.'</option>';
 				}
 			}
 
-			$stmt->close();
+			$objStmt->close();
         }
 
         //Se ocorreu algum erro, mostra mensagem de erro.
-        if($mysqli->errno) {
-        	throw new Exception($mysqli->errno .', ' . $mysqli->error);
+        if($objMysqli->errno) {
+        	throw new Exception($objMysqli->errno .', ' . $objMysqli->error);
         }
 
 		//Finaliza conexão ao BD		
-		$mysqli->close();		
+		$objMysqli->close();		
 	}
 
 	class Usuario {
-		public $nome;
-		public $email;
-		public $senha;
-		public $nivel;
-		public $id_empresa;
-		public $ativo;
+		public $strNome;
+		public $strEmail;
+		public $strSenha;
+		public $strNivel;
+		public $intIdEmpresa;
+		public $intAtivo;
 	}
 
 	class Empresa {
-		public $id;
-		public $nome;
+		public $intId;
+		public $strNome;
 	}
 
 ?>

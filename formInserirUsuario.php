@@ -42,9 +42,9 @@
 							try {
 								bd_printOptionsEmpresas();							
 							}
-							catch (Exception $e) {
+							catch (Exception $objE) {
 								echo '</select>';
-								die('Erro: ' . $e->getMessage());
+								die('Erro: ' . $objE->getMessage());
 							}
 						?>
 						
