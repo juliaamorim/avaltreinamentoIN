@@ -16,7 +16,7 @@
 	<?php
 		//Obtendo os parâmetros atuais da empresa a ser alterada.
 		$intId_empresa = $_GET['id_empresa'];
-		$mysqli = bd_inicia();
+		$mysqli = bd_conecta();
 		$strNome = 'SELECT nome FROM empresas WHERE id = $intId_empresa';
 		$intAtiva = 'SELECT ativa FROM empresas WHERE id = $intId_empresa';
 		global $inId_empresa, $strNome, $intAtiva;
@@ -44,7 +44,7 @@
 	$strNovoStatus = $_POST['status'];
 
 	if($strNovoNome == '' || $strNovoStatus == ''){
-		echo 'Todos os campos são obrigatórios. Clique <a href = "alteraEmpresa.php">aqui</a> para retornar à página anterior.'
+		echo 'Todos os campos são obrigatórios. Clique <a href = "alteraEmpresa.php">aqui</a> para retornar à página anterior.';
 	}else{
 		$sql = 'UPDATE empresas SET (id, nome, ativa) VALUES (?, ?, ?)';
 		$stmt = $mysqli->prepare($sql);
