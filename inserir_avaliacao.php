@@ -30,7 +30,9 @@
                     <br><br>
                      
                     <label for="nome">Data de Criação:</label>
-                    <input type="text" placeholder="dd/mm/aaaa" name="dt_criacao" maxlength="10" />
+                    <?php
+                     echo $data = date("d/m/Y"); 
+                     ?>
                      
                     <br><br>
  
@@ -45,11 +47,6 @@
                      
                     <br><br>
                     
-                    <label for="nome">ID Empresa</label>
-                    <input type="text" placeholder="ex: 01"  name="id_empresa" />
-                    
-                    <br><br> 
-                
                     <button type="submit" name="enviar">Inserir</button>
  
             </fieldset>
@@ -64,16 +61,20 @@
 </html>
  
 <?php   
+
     if(isset($_POST['enviar'])){ #Informa se a variável foi iniciada
 
         $nome = $_POST['nome'];
-        $dt_criacao = $_POST['dt_criacao'];
         $descricao = $_POST['descricao'];
         $aberta = $_POST['aberta'];
-        $id_empresa = $_POST['id_empresa'];
+        
          
-        if($nome == '' || $dt_criacao == '' || $descricao == '' || $aberta == '' || $id_empresa == ''){
-            echo 'Existe(m) campo(s) obrigatório(s) em branco, <a href="inserir_avaliacao.php"> tente novamente</a>';
+        if($nome == ''){
+            echo 'ATENÇÃO!! Campo NOME encontra-se vazio.';
+        } 
+
+        elseif ($descricao == '') {
+            echo 'ATENÇÃO!! Campo DESCRIÇÃO encontra-se vazio.';
         }
          
         else{
@@ -88,8 +89,8 @@
                  
                 mysqli_set_charset($mysqli, 'utf8');
                  
-                $sql = "INSERT INTO aval (nome, dt_criacao, descricao, aberta, id_empresa)"
-                ."values ('$nome', '$dt_criacao', '$descricao', '$aberta', '$id_empresa')";
+                $sql = "INSERT INTO aval (nome, dt_criacao, descricao, aberta)"
+                ."values ('$nome', ?, '$descricao', '$aberta')";
                  
                   
                 $stmt = $mysqli->prepare($sql);
@@ -115,4 +116,4 @@
             }
         }
 }      
-?>
+?>      
