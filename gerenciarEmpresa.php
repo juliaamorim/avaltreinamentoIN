@@ -1,23 +1,20 @@
 <?php
 
-	// require_once('scripts/session.php');
-	//require_once('scripts/bd.php');
+	require_once('scripts/functions.php');
+	require_once('scripts/bd.php');
 	//Acesso permitido somente a usuários de nível adminDeus
-	// session_validaLoginRedirect('adminDeus');
-	
-require 'layoutUp.php';
+	session_validaLoginRedirect('adminDeus');
+	require 'layoutUp.php';
 
 		
-			$mysqli = new mysqli('localhost','root','','avaltreinamento');
-			
-			if (mysqli_connect_errno()){
-				die('Não foi possível conectar-se ao banco de dados.');
-			}
-			
-			else{
-			mysqli_set_charset($mysqli, 'utf8');
-			$sql = "select id, nome, ativa from empresas ";
-			$query = $mysqli->query($sql);
+		$mysqli = bd_conecta();
+		$sql = "select id, nome, ativa from empresas ";
+		$query = $mysqli->query($sql);
+			  
+		if(mysql_num_rows($consultar) < 0){
+			echo "Tabela vazia";
+		} else{
+
 			if($query){
 						echo 
 						"<table border='1'>
@@ -45,9 +42,9 @@ require 'layoutUp.php';
 						mysqli_free_result($query);
 				
 						mysqli_close($mysqli);
+			}
 		}
-	}	
-		// } 
+	 
 	require 'layoutDown.php';
 	
 	
