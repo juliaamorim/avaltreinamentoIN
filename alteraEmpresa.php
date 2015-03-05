@@ -17,6 +17,7 @@
 		//Obtendo os parâmetros atuais da empresa a ser alterada.
 		$intId_empresa = $_GET['id_empresa'];
 		$mysqli = bd_conecta();
+
 		$strNome = 'SELECT nome FROM empresas WHERE id = $intId_empresa';
 		$intAtiva = 'SELECT ativa FROM empresas WHERE id = $intId_empresa';
 		global $inId_empresa, $strNome, $intAtiva;

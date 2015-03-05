@@ -1,7 +1,7 @@
-<?php
-	require_once('scripts/session.php');
-?>
 <!DOCTYPE html>
+<?php
+	require_once('scripts/functions.php');
+?>
 <html lang="pt-BR">
 	<head>
 		<title>SAT - Sistema de Avaliação de Treinamento</title>
