@@ -15,12 +15,12 @@
 <body>
 	<?php
 		//Obtendo os parâmetros atuais da empresa a ser alterada.
-		$intId_empresa = $_GET['id_empresa'];
+		$intIdEmpresa = $_GET['id_empresa'];
 		$mysqli = bd_conecta();
 
-		$strNome = 'SELECT nome FROM empresas WHERE id = $intId_empresa';
-		$intAtiva = 'SELECT ativa FROM empresas WHERE id = $intId_empresa';
-		global $inId_empresa, $strNome, $intAtiva;
+		$strNome = 'SELECT nome FROM empresas WHERE id = $intIdEmpresa';
+		$intAtiva = 'SELECT ativa FROM empresas WHERE id = $intIdEmpresa';
+		global $inIdEmpresa, $strNome, $intAtiva;
 	?>
 
 	<center>ALTERAR EMPRESA</center>
@@ -50,7 +50,7 @@
 		$sql = 'UPDATE empresas SET (id, nome, ativa) VALUES (?, ?, ?)';
 		$stmt = $mysqli->prepare($sql);
 
-		$stmt->bind_param('isi', $inId_empresa, $strNome, $intAtiva);
+		$stmt->bind_param('isi', $inIdEmpresa, $strNome, $intAtiva);
 		$stmt->execute();
 
 		$stmt->close();
