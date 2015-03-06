@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <?php
-	require_once('scripts/session.php');
+	require_once('scripts/functions.php');
 	require_once('scripts/bd.php');
 	//Acesso permitido somente a usuários de nível adminDeus
-	session_validaLoginRedirect('adminDeus');
+	//session_validaLoginRedirect('adminDeus');
 ?>
 
 <html>
@@ -15,24 +15,24 @@
 <body>
 	<?php
 		//Obtendo os parâmetros atuais da empresa a ser alterada.
-		$intIdEmpresa = $_GET['id_empresa'];
+		//$intIdEmpresa = $_GET['id_empresa'];
+		$intIdEmpresa = 1;
 		$mysqli = bd_conecta();
 
-		$strNome = 'SELECT nome FROM empresas WHERE id = $intIdEmpresa';
-		$intAtiva = 'SELECT ativa FROM empresas WHERE id = $intIdEmpresa';
-		global $inIdEmpresa, $strNome, $intAtiva;
+		$strNome = "SELECT nome FROM empresas WHERE id = $intIdEmpresa";
+		$intAtiva = "SELECT ativa FROM empresas WHERE id = $intIdEmpresa";
 	?>
 
 	<center>ALTERAR EMPRESA</center>
 
-	<form method = "POST" action = "gerenciarEmpresa.php" enctype="multipart/form-data">
+	<form method = "POST" action = "alteraEmpresa.php" enctype="multipart/form-data">
 		<p>Clique no campo que deseja alterar.</p>
 		<fieldset>
 			<label for = "nome">Nome da Empresa</label>
-			<input type = "text" name = "nome" value = ""/>
+			<input type = "text" name = "nome" value = "<?php echo "$strNome" ?>" />
 
 			<label for = "status">Status</label>
-			<input type = "text" nome = "status" value = ""/>
+			<input type = "text" nome = "status" value = "<?php echo "$intAtiva" ?>" />
 
 			<button type = "submit" name = "confirmar">Confirmar</button>
 		</fieldset>
@@ -41,19 +41,25 @@
 </html>
 
 <?php
-	$strNovoNome = $_POST['nome'];
-	$strNovoStatus = $_POST['status'];
+	if(isset($_POST['nome']) && isset($POST['status'])){
+		$strNovoNome = $_POST['nome'];
+		$strNovoStatus = $_POST['status'];
 
-	if($strNovoNome == '' || $strNovoStatus == ''){
-		echo 'Todos os campos são obrigatórios. Clique <a href = "alteraEmpresa.php">aqui</a> para retornar à página anterior.';
-	}else{
-		$sql = 'UPDATE empresas SET (id, nome, ativa) VALUES (?, ?, ?)';
-		$stmt = $mysqli->prepare($sql);
+		if($strNovoNome == '' || $strNovoStatus == ''){
+?>	 		Todos os campos são obrigatórios. Clique  <a href = "alteraEmpresa.php">aqui</a>  para retornar à página anterior. 
 
-		$stmt->bind_param('isi', $inIdEmpresa, $strNome, $intAtiva);
-		$stmt->execute();
+<?php
+		}else{
+			$sql = 'UPDATE empresas SET (id, nome, ativa) VALUES (?, ?, ?)';
+			$stmt = $mysqli->prepare($sql);
 
-		$stmt->close();
-		$mysqli->close();
-	}
+			$stmt->bind_param('isi', $inIdEmpresa, $strNome, $intAtiva);
+			$stmt->execute();
+
+			$stmt->close();
+			$mysqli->close();
+		}
+}
+
+	
 ?>

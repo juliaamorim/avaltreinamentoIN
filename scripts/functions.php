@@ -6,7 +6,7 @@
 
 	//Cria conexão ao banco de dados e retorna o objeto de link
 	function bd_conecta() {
-		$objMysqli = new mysqli('localhost','root','injunior','avaltreinamento');
+		$objMysqli = new mysqli('localhost','root','','avaltreinamento');
 		
 		if ($objMysqli->connect_errno){
 			die('Falha na conexão ao banco de dados: '.mysqli_connect_error());
