@@ -61,8 +61,8 @@
 	if(!session_validaLogin()) {
 		//Pega login e senha passados pelo formulário de login
 		$strEmail = (isset($_POST['email']) ? $_POST['email'] : null);		
-		$strSenha = (isset($_POST['senha']) ? $_POST['senha'] : null);
-
+		$strSenha = (isset($_POST['senha']) ? sha1($_POST['senha']) : null); //modificação pegando o sha-1 da senha
+		
 		//Tentativa de login
 		if ( $strEmail && $strSenha) {
 			$objUsuario = buscaUsuario($strEmail, $strSenha);
@@ -71,14 +71,22 @@
 			if ( is_null($objUsuario) ) {
 				session_printWelcomeMessage();
 				echo '<br/><br/>';
-				die('Email e/ou senha inválidos.');
+				die(htmlentities('Email e/ou senha inválidos.'));
 			}
-			else {				
-				$_SESSION['nome'] = $objUsuario->strNome;
-				$_SESSION['email'] = $objUsuario->strEmail;
-				$_SESSION['nivel'] = $objUsuario->strNivel;
-				$_SESSION['id_empresa'] = $objUsuario->intIdEmpresa;
-				$_SESSION['ativo'] = $objUsuario->intAtivo;
+			else { 
+			//modificado para testar se o usuário está ativo na empresa
+			//caso esteja inicializa a session, caso contrario exibe mensagem de erro
+				if($objUsuario->intAtivo != 0){
+					$_SESSION['nome'] = $objUsuario->strNome;
+					$_SESSION['email'] = $objUsuario->strEmail;
+					$_SESSION['nivel'] = $objUsuario->strNivel;
+					$_SESSION['id_empresa'] = $objUsuario->intIdEmpresa;
+					$_SESSION['ativo'] = $objUsuario->intAtivo;
+				}else{
+					session_printWelcomeMessage();
+					echo '<br/><br/>';
+					die(htmlentities('O usuário é inválido.')); //htmlentities() codifica os caracteres especiais em html
+				}
 			}
 		}
 		//Preencheu somente um campo do formulário de login
@@ -91,8 +99,8 @@
 	
 ?>
 <html lang="pt-BR">
-	<head>
-		<title>SAT - Sistema de Avaliação de Treinamento</title>
+	<head> <!--htmlentities() codifica os caracteres especiais em html-->
+		<title><?php echo htmlentities('SAT - Sistema de Avaliação de Treinamento'); ?></title>
 	</head>
 	<body>
 		<header>
@@ -102,8 +110,8 @@
 		</header>
 		<nav>
 			<?php
-				if ( session_validaLogin('adminGeral','adminDeus') ) {
-					echo '<a href="formInserirUsuario.php">Inserir Usuário</a>';
+				if ( session_validaLogin('adminGeral','adminDeus') ) { //teste para mostrar a funcionalidade no login
+					echo '<a href="formInserirUsuario.php">Inserir Usu&aacuterio</a>';
 				}
 			?>			
 		</nav>
