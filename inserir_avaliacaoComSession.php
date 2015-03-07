@@ -1,14 +1,18 @@
 <!DOCTYPE html>
+<?php
+   require_once('scripts/session.php');
+   require_once('scripts/bd.php');
+   //Acesso permitido somente a usuários de nível adminDeus
+   session_validaLoginRedirect( 'admin' ,'adminGeral','adminDeus');
+?>
 <html>
 <head>
     <title>IN Junior</title>
     <meta charset="utf-8"/>
 </head>
 <body>
-    <header>
-    </header>
-    <section id="main">
-         
+    
+    <section id="main">    
     <nav>
     <section id="main">
     <article id="content">   
@@ -46,6 +50,14 @@
                     </select>  
                      
                     <br><br>
+
+                    <label for="nome"> ID Empresa </label>
+                    <?php
+                    //Obtendo ID da empresa.
+                       $id_empresa = $_GET['id_empresa'];
+                       $mysqli = bd_inicia();
+                       $nome = 'SELECT nome FROM empresas WHERE id = $id_empresa';
+                   ?>
                     
                     <button type="submit" name="enviar">Inserir</button>
  
@@ -67,7 +79,6 @@
         $nome = $_POST['nome'];
         $descricao = $_POST['descricao'];
         $aberta = $_POST['aberta'];
-        
          
         if($nome == ''){
             echo 'ATENÇÃO!! Campo NOME encontra-se vazio.';
@@ -78,8 +89,8 @@
         }
          
         else{
-             
-            $mysqli = new mysqli('localhost','root','','avaltreinamento');
+                      
+            $mysqli = new mysqli('localhost','root','injunior','avaltreinamento');
              
             if (mysqli_connect_errno()){
                 die('Não foi possível conectar-se ao banco de dados.<a href="inserir_avaliacao.php"> Tente novamente</a>'/*.mysqli_connect_error()*/);
@@ -89,8 +100,8 @@
                  
                 mysqli_set_charset($mysqli, 'utf8');
                  
-                $sql = "INSERT INTO aval (nome, dt_criacao, descricao, aberta)"
-                ."values ('$nome', ?, '$descricao', '$aberta')";
+                $sql = "INSERT INTO aval (nome, dt_criacao, descricao, aberta, id_empresa)"
+                ."values ('$nome', ?, '$descricao', '$aberta', ?)";
                  
                   
                 $stmt = $mysqli->prepare($sql);

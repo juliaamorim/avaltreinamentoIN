@@ -4,6 +4,19 @@
 		session_start();
 	}
 
+	//Cria conexão ao banco de dados e retorna o objeto de link
+	function bd_conecta() {
+		$objMysqli = new mysqli('localhost','root','130293','avaltreinamento');
+		
+		if ($objMysqli->connect_errno){ //htmlentities() codifica os caracteres especiais em html
+			die(htmlentities('Falha na conexão ao banco de dados: ').mysqli_connect_error()); 
+		}
+		
+		$objMysqli->set_charset('latin1_swedish_ci');
+
+		return $objMysqli;
+	}
+
 	/*
 	Descrição:
 	Esta função verifica se o usuário está logado.
@@ -24,8 +37,8 @@
 		}
 		//Se logado e possui argumentos, valida nível do usuário
 		else if (func_num_args() > 0) {
-			foreach (func_get_args() as $param) {
-		        if ( $_SESSION['nivel'] == $param ) {
+			foreach (func_get_args() as $strParam) {
+		        if ( $_SESSION['nivel'] == $strParam ) {
 					return true;
 				}
 		    }
@@ -35,9 +48,9 @@
 	}
 
 	function session_validaLoginRedirect() {
-		$args = func_get_args();
-		$validado = call_user_func_array('session_validaLogin', $args);
-		if ( !$validado ) {
+		$arrayArgs = func_get_args();
+		$boolValidado = call_user_func_array('session_validaLogin', $arrayArgs);
+		if ( !$boolValidado ) {
 			header('Location: semPermissao.php');
 		}
 	}
@@ -48,41 +61,40 @@
 			echo '<a href="logout.php"> Logout </a>';
 			echo '<br/>';
 			echo '<br/>';
-		}
-		else {
-			echo 'Bem-vindo, Anônimo. ';	
+		}else{
+			echo htmlentities('Bem-vindo, Anônimo. ');	//htmlentities() codifica os caracteres especiais em html
 			echo '<a href="login.php"> Login </a>';
 			echo '<br/>';
 			echo '<br/>';
 		}
 	}
 
-	function logout() {
+	function session_logout() {
 		echo 'Logging out...';
 		session_destroy();
 		header('Location: index.php');
 	}
 
 	
-	//função para enviar menssagens. para enviar uma menssagem por ela, basta setar a menssagem e seu tipo no caso de uso anteriro por meio da função setaMenssagem()
+	//função para enviar menssagens. para enviar uma menssagem por ela, basta setar a mensagem e seu tipo no caso de uso anterior por meio da função setaMenssagem()
 	function imprimeMenssagem(){
 		//testa se tem alguma mensagem, se tiver, printa
 		if(isset($_SESSION['msg']) && isset($_SESSION['tipo'])){
-			$classe = "";
+			$strClasse = "";
 			switch($_SESSION['tipo']){
 				case "info":
-					$classe = "info";
+					$strClasse = "info";
 					break;
 				case "sucesso":
-					$classe = "sucesso";
+					$strClasse = "sucesso";
 					break;
 				case "erro":
-					$classe = "erro";
+					$strClasse = "erro";
 					break;
 			}
 				
 			?>
-				<div class="<?php=$classe?>">
+				<div class="<?php=$strClasse?>">
 					<?php
 					switch($_SESSION['tipo'])
 					{

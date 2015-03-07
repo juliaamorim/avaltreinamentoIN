@@ -1,10 +1,51 @@
+<!DOCTYPE html>
 <?php
-	require_once('scripts/session.php');
-	require_once('scripts/bd.php');
+	require_once('scripts/functions.php');
+	
 	//Acesso permitido somente a usuários de nível adminGeral ou adminDeus
 	session_validaLoginRedirect('adminGeral','adminDeus');
+
+	class Empresa {
+		public $intId;
+		public $strNome;
+	}
+
+	function bd_printOptionsEmpresas() {
+		$objMysqli = bd_conecta();
+		
+		//Cria comando SQL
+		$strSQL = 'SELECT id, nome FROM empresas;';
+             
+        if ($objStmt = $objMysqli->prepare($strSQL)) {
+        	
+			//Executa query SQL
+			if ($objStmt->execute()) {
+				$objEmpresa = new Empresa();
+
+				//Configura em que variáveis serão guardados os retornos da query
+				$objStmt->bind_result(
+					$objEmpresa->intId,
+					$objEmpresa->strNome);
+				
+				//Para cada empresa no banco de dados, imprime uma opção para ela
+				while( $objStmt->fetch() ) {
+					echo '<option value="'.$objEmpresa->intId.'">'.$objEmpresa->strNome.'</option>';
+				}
+			}
+
+			$objStmt->close();
+        }
+
+        //Se ocorreu algum erro, mostra mensagem de erro.
+        if($objMysqli->errno) {
+        	throw new Exception($objMysqli->errno .', ' . $objMysqli->error);
+        }
+
+		//Finaliza conexão ao BD		
+		$objMysqli->close();		
+	}
+
 ?>
-<!DOCTYPE html>
 <html>
 	<head>
 		<title>Formulário de inserção de usuário</title>
@@ -42,9 +83,9 @@
 							try {
 								bd_printOptionsEmpresas();							
 							}
-							catch (Exception $e) {
+							catch (Exception $objE) {
 								echo '</select>';
-								die('Erro: ' . $e->getMessage());
+								die('Erro: ' . $objE->getMessage());
 							}
 						?>
 						

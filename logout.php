@@ -1,4 +1,4 @@
 <?php
-	require_once('scripts/session.php');
-	logout();
+	require_once('scripts/functions.php');
+	session_logout();
 ?>
