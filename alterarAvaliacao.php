@@ -66,7 +66,7 @@
 	}
 	if($_POST['abert']!== ""){
 		$intAberta = $_POST['abert'];
-		$sql="update aval set aberta='$intAberta]' where id = '$id' ";
+		$sql="update aval set aberta='$intAberta' where id = '$id' ";
 		if($query){
 			echo "Situação da avaliação alterada: ".'<br>';			
 			if ($intAberta ==0) {
