@@ -6,10 +6,10 @@
 
 	//Cria conexão ao banco de dados e retorna o objeto de link
 	function bd_conecta() {
-		$objMysqli = new mysqli('localhost','root','','avaltreinamento');
+		$objMysqli = new mysqli('localhost','root','130293','avaltreinamento');
 		
-		if ($objMysqli->connect_errno){
-			die('Falha na conexão ao banco de dados: '.mysqli_connect_error());
+		if ($objMysqli->connect_errno){ //htmlentities() codifica os caracteres especiais em html
+			die(htmlentities('Falha na conexão ao banco de dados: ').mysqli_connect_error()); 
 		}
 		
 		$objMysqli->set_charset('latin1_swedish_ci');
@@ -61,9 +61,8 @@
 			echo '<a href="logout.php"> Logout </a>';
 			echo '<br/>';
 			echo '<br/>';
-		}
-		else {
-			echo 'Bem-vindo, Anônimo. ';	
+		}else{
+			echo htmlentities('Bem-vindo, Anônimo. ');	//htmlentities() codifica os caracteres especiais em html
 			echo '<a href="login.php"> Login </a>';
 			echo '<br/>';
 			echo '<br/>';
