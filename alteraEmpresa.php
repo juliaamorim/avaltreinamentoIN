@@ -3,7 +3,7 @@
 	require_once('scripts/functions.php');
 	require_once('scripts/bd.php');
 	//Acesso permitido somente a usuários de nível adminDeus
-	//session_validaLoginRedirect('adminDeus');
+	session_validaLoginRedirect('adminDeus');
 	session_printWelcomeMessage();
 
 	if(isset($_POST['nome']) && isset($POST['status'])){
@@ -28,8 +28,7 @@
 		}
 	}else{
 		//Obtendo os parâmetros atuais da empresa a ser alterada.
-		//$intIdEmpresa = $_GET['id_empresa'];
-		$intIdEmpresa = 1;
+		$intIdEmpresa = $_GET['id_empresa'];
 		$mysqli = bd_conecta();
 
 		$strNome = 'SELECT nome FROM empresas WHERE id = $intIdEmpresa;';
