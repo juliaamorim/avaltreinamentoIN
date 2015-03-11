@@ -1,13 +1,13 @@
 <?php
-	require_once('scripts/session.php');
-	require_once('scripts/bd.php');
+	require_once('scripts/functions.php');
 	//Acesso permitido somente a usuários de nível adminGeral ou adminDeus
-	// session_validaLoginRedirect('adminGeral','adminDeus');
+	//session_validaLoginRedirect('adminGeral','adminDeus');
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<title>GERENCIAR USUÁRIOS</title>
+		<meta charset="UTF-8"/>
 	</head>
 	<body>
 		<header>
@@ -22,11 +22,11 @@
 				<input type = "text" name = "busca"/>
 
 				<br><br>
-				<form action="gerenciaUsuario.php">
+				<!--<form action="gerenciaUsuario.php">-->
 					Incluir usuário inativos?<br>
 					<input type="radio" name="ativo" value=0>Sim<br>
 					<input type="radio" name="ativo" value=1 checked>Não<br>
-				</form>
+				<!--</form>-->
 
 				<br><br>
 
