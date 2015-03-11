@@ -45,8 +45,6 @@
 					echo 'Registros encontrados: '.$query->num_rows;
 					
 					if($query->num_rows > 0){
-						
-						echo '<br><br>Listagem de usuários: <br><br>';
 						echo "<table border='1'>
 							<tr>
 								<th>Nome</th>
@@ -81,8 +79,6 @@
 							
 							echo '<td><a href="excluiUsuario.php?excluir='.$objDados['id'].'">Excluir</a></td>';
 							
-
-							echo '<br><br>';
 							echo "</tr>";
 						}
 						
