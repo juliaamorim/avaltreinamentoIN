@@ -8,9 +8,9 @@
 	</head>
 	<body>
 		<header>
-			<?php
+			<!-- <?php
 				session_printWelcomeMessage();
-			?>
+			?> -->
 		</header>
 		<section>
 			<?php
@@ -26,6 +26,7 @@
 						Senha: <input type="password" name="senha" required></input><br/>
 						<button type="submit">Logar</button>
 					</form>
+					<a href="esqueceuSenha.php"> Esqueceu Senha?</a>
 			<?php
 				}
 			?>			
