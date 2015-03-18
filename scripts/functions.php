@@ -7,6 +7,8 @@
 	//Cria conexão ao banco de dados e retorna o objeto de link
 	function bd_conecta() {
 		$objMysqli = new mysqli('localhost','inJunior','inJunior','avaltreinamento');
+		//query usada apenas pro nicholas não reconfigurar o mysql dele =D por favor não apaguem
+		//$objMysqli = new mysqli('localhost','root','','avaltreinamento'); 
 		
 		if ($objMysqli->connect_errno){ //htmlentities() codifica os caracteres especiais em html
 			die(htmlentities('Falha na conexão ao banco de dados: ').mysqli_connect_error()); 
@@ -57,15 +59,21 @@
 
 	function session_printWelcomeMessage() {
 		if ( isset( $_SESSION['nome']) ) {
+			echo '<p>';
 			echo 'Bem-vindo, '.$_SESSION['nome']. '. ';
+			echo '<br/>';
 			echo '<a href="logout.php"> Logout </a>';
-			echo '<br/>';
-			echo '<br/>';
+			echo '</p>';
+			/* echo '<br/>';
+			echo '<br/>'; */
 		}else{
-			echo htmlentities('Bem-vindo, Anônimo. ');	//htmlentities() codifica os caracteres especiais em html
+			echo '<p>';
+			echo htmlentities('Bem-vindo, Anônimo.');	//htmlentities() codifica os caracteres especiais em html
+			echo '<br/>';
 			echo '<a href="login.php"> Login </a>';
-			echo '<br/>';
-			echo '<br/>';
+			echo '</p>';
+			/*echo '<br/>';
+			echo '<br/>'; */
 		}
 	}
 
