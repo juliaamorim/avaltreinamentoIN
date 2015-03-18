@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php
 	require_once('scripts/functions.php');
-
 	class Usuario {
 		public $strNome;
 		public $strEmail;
@@ -9,7 +8,6 @@
 		public $intIdEmpresa;
 		public $intAtivo;
 	}
-
 	//TODO: Armazenar senha em HASH e valida senha usando HASH
 	function buscaUsuario($strEmail, $strSenha) {
 		$objUsuario = null;
@@ -21,11 +19,9 @@
         if ($objStmt = $objMysqli->prepare($strSQL)) {
         	//Preenche parâmetros SQL de forma segura
 			$objStmt->bind_param('ss',$strEmail,$strSenha);
-
 			//Executa query SQL
 			if ($objStmt->execute()) {
 				$objUsuario = new Usuario();
-
 				//Configura em que variáveis serão guardados os retornos da query
 				$objStmt->bind_result(
 					$objUsuario->strNome,
@@ -33,24 +29,19 @@
 					$objUsuario->strNivel,
 					$objUsuario->intIdEmpresa,
 					$objUsuario->intAtivo);
-
 				//Se não houve retorno (não achou usuario), então $objUsuario = null
 				if( !$objStmt->fetch() ) {
 					$objUsuario = null;
 				}
 			}
-
 			$objStmt->close();
         }
-
         //Se ocorreu algum erro, mostra mensagem de erro.
         if($objMysqli->errno) {
         	throw new Exception($objMysqli->errno .', ' . $objMysqli->error);
         }
-
 		//Finaliza conexão ao BD		
 		$objMysqli->close();
-
 		//Retorna objeto $objUsuario
 		return $objUsuario;
 	}
@@ -66,7 +57,6 @@
 		//Tentativa de login
 		if ( $strEmail && $strSenha) {
 			$objUsuario = buscaUsuario($strEmail, $strSenha);
-
 			//Se $usuario é null, então email e/ou senha são inválidos
 			if ( is_null($objUsuario) ) {
 				session_printWelcomeMessage();
@@ -101,19 +91,24 @@
 <html lang="pt-BR">
 	<head> <!--htmlentities() codifica os caracteres especiais em html-->
 		<title><?php echo htmlentities('SAT - Sistema de Avaliação de Treinamento'); ?></title>
+		<link 
+		href="css/style.css" 
+		title="style" 
+		type="text/css" 
+		rel="stylesheet"
+		media="all"/>
 	</head>
 	<body>
-		<header>
-			<?php
+		<?php include('layoutUp.php'); ?>
+		<!-- <section id="main"> aberto no layoutUp-->
+		
+			<article id="content"> <!-- basicamente botar todo php que mostra página pro usuário -->
+				<?php
 				session_printWelcomeMessage();
-			?>
-		</header>
-		<nav>
-			<?php
-				if ( session_validaLogin('adminGeral','adminDeus') ) { //teste para mostrar a funcionalidade no login
-					echo '<a href="formInserirUsuario.php">Inserir Usu&aacuterio</a>';
-				}
-			?>			
-		</nav>
+				?>	
+			</article> 
+		</section> <!-- fechando o <section id="main"> aberto no layoutUp-->
+		
+		<?php include('layoutDown.php'); ?>
 	</body>
 </html>

@@ -1,0 +1,321 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+html{
+    background: #666;
+	background: -moz-linear-gradient(top, #919191 0%, #333 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #919191), color-stop(100%, #333));
+	background: -webkit-linear-gradient(top, #919191 0%, #333 100%);
+	background: -o-linear-gradient(top, #919191 0%, #333 100%);
+	background: -ms-linear-gradient(top, #919191 0%, #333 100%);
+	background: linear-gradient(to bottom, #919191 0%, #333 100%);
+    /* garantir q a tag html tome o tamanho total da janela do browser */
+    min-height:100%;
+    /* The Magic: Pode ser necessário caso tenha uma img como bkg */
+    background-size:cover;
+}
+
+body{
+    /* background removido do body */
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+ 
+header h1{
+ color: #0066CD;
+ position: fixed;
+ font-size: 30px;
+ top: 25px;
+ left:350px;
+}
+ 
+header h2{
+position: absolute;
+top:30px;
+left: 400px;
+}
+ 
+h1{
+    margin: 0;
+ 
+}
+
+p{
+	margin-bottom: 0px;
+	text-align: center;
+}
+
+header{
+
+    width:850px;
+    height: 210px;
+    margin: 0 auto; /*CSS Hack!*/
+    background-image: url('../img/header.jpg');
+    padding: 0px;
+    border-bottom: solid 2px #999;
+    box-shadow: 0px 0px 10px;
+	overflow: hidden;
+}
+ 
+section#main{
+
+    background-color: #FFF;
+    width: 850px;
+    margin: 0 auto;
+    overflow: hidden;
+    box-shadow: 0px 0px 10px;
+}
+article#content{
+    float:right;
+    width:810px;
+    padding:20px;
+	min-height:200px; /*Tamanho arbitrário para não bugar o menu*/
+}
+
+article#content h2{
+	color: #06c;
+	text-align: center;
+}
+
+form {
+    display: block;
+    text-align: center;
+}
+
+footer{
+	height: 20px;
+	width: 834px;
+	margin: 0 auto;
+	background: #666666;
+	background: -moz-linear-gradient(top, #919191 0%, #666666 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #919191), color-stop(100%, #666666));
+	background: -webkit-linear-gradient(top, #919191 0%, #666666 100%);
+	background: -o-linear-gradient(top, #919191 0%, #666666 100%);
+	background: -ms-linear-gradient(top, #919191 0%, #666666 100%);
+	background: linear-gradient(to bottom, #919191 0%, #666666 100%);
+	border-top: 2px solid  #0066CC;
+	box-shadow: 0px 1px 10px;
+	padding: 8px;
+	text-align: center;
+}
+
+footer a,footer a:visited{
+	color: #FFF;
+	text-decoration: none;
+	font-family: 'Ubuntu', sans-serif;
+}
+
+.clear{
+    clear:both;
+}
+.dados-tabulados{
+    border: solid 1px #555;
+    border-radius: 10px;
+    width: 100%;
+}
+ 
+.dados-tabulados tr{
+    border-bottom: solid 1px #555;
+}
+ 
+.dados-tabulados tbody tr:nth-child(odd){
+    background-color: #DDD;
+}
+ 
+.dados-tabulados tbody tr:nth-child(even){
+    background-color: #CCC;
+}
+#content ol{
+    list-style-position: outside;
+    list-style-type: upper-roman;
+}   
+ 
+#content ul{
+    list-style-position: outside;
+    list-style-type: circle;
+    list-style-image: url('../img/check.gif');
+} 
+/* Divs Marotas */
+
+
+.menuLogoDiv{
+	float:right;
+	padding-right: 400px;
+	padding-top: 5px;
+}
+
+/*menu*/  
+#cssmenu ul,
+#cssmenu li,
+#cssmenu span,
+#cssmenu span img,
+#cssmenu a {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+#cssmenu {
+
+  line-height: 1;
+  background: #666666;
+  background: -moz-linear-gradient(top, #919191 0%, #666666 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #919191), color-stop(100%, #666666));
+  background: -webkit-linear-gradient(top, #919191 0%, #666666 100%);
+  background: -o-linear-gradient(top, #919191 0%, #666666 100%);
+  background: -ms-linear-gradient(top, #919191 0%, #666666 100%);
+  background: linear-gradient(to bottom, #919191 0%, #666666 100%);
+  border-bottom: 2px solid  #0066CC;
+  width: auto;
+}
+#cssmenu:after,
+#cssmenu ul:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+#cssmenu a {
+  background: #666666;
+  background: -moz-linear-gradient(top, #919191 0%, #666666 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #919191), color-stop(100%, #666666));
+  background: -webkit-linear-gradient(top, #919191 0%, #666666 100%);
+  background: -o-linear-gradient(top, #919191 0%, #666666 100%);
+  background: -ms-linear-gradient(top, #919191 0%, #666666 100%);
+  background: linear-gradient(to bottom, #919191 0%, #666666 100%);
+  color: #ffffff;
+  display: block;
+  font-family: Helvetica, Arial, Verdana, sans-serif;
+  padding: 5px;
+  /*padding: 19px 20px;*/
+  text-decoration: none;
+}
+#cssmenu ul {
+  list-style: none;
+}
+#cssmenu > ul > li {
+  display: inline-block;
+  float: left;
+  margin: 0;
+}
+#cssmenu.align-center {
+  text-align: center;
+}
+#cssmenu.align-center > ul > li {
+  float: none;
+}
+#cssmenu.align-center ul ul {
+  text-align: left;
+}
+#cssmenu.align-right > ul {
+  float: right;
+}
+#cssmenu.align-right ul ul {
+  text-align: right;
+}
+#cssmenu > ul > li > a {
+  color: #ffffff;
+  font-size: 12px;
+}
+#cssmenu > ul > li:hover:after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid  #0066CC;
+  margin-left: -10px;
+}
+#cssmenu > ul > li:first-child > a {
+  border-radius: 5px 0 0 0;
+  -moz-border-radius: 5px 0 0 0;
+  -webkit-border-radius: 5px 0 0 0;
+}
+#cssmenu.align-right > ul > li:first-child > a,
+#cssmenu.align-center > ul > li:first-child > a {
+  border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+}
+#cssmenu.align-right > ul > li:last-child > a {
+  border-radius: 0 5px 0 0;
+  -moz-border-radius: 0 5px 0 0;
+  -webkit-border-radius: 0 5px 0 0;
+}
+#cssmenu > ul > li.active > a,
+#cssmenu > ul > li:hover > a {
+  color: #ffffff;
+  background: #666666;
+  background: -moz-linear-gradient(top, #919191 0%, #666666 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #919191), color-stop(100%, #666666));
+  background: -webkit-linear-gradient(top, #919191 0%, #666666 100%);
+  background: -o-linear-gradient(top, #919191 0%, #666666 100%);
+  background: -ms-linear-gradient(top, #919191 0%, #666666 100%);
+  background: linear-gradient(to bottom, #919191 0%, #666666 100%);
+}
+#cssmenu .has-sub {
+  z-index: 1;
+}
+#cssmenu .has-sub:hover > ul {
+  display: block;
+}
+#cssmenu .has-sub ul {
+  display: none;
+  position: absolute;
+  width: 200px;
+  top: 100%;
+  left: 0;
+}
+#cssmenu.align-right .has-sub ul {
+  left: auto;
+  right: 0;
+}
+#cssmenu .has-sub ul li {
+  *margin-bottom: -1px;
+}
+#cssmenu .has-sub ul li a {
+  background:  #0066CC;
+  border-bottom: 1px dotted #31b7f1;
+  font-size: 11px;
+  filter: none;
+  display: block;
+  line-height: 120%;
+  padding: 10px;
+  color: #ffffff;
+}
+#cssmenu .has-sub ul li:hover a {
+  background: #0066CC;
+}
+#cssmenu ul ul li:hover > a {
+  color: #ffffff;
+}
+#cssmenu .has-sub .has-sub:hover > ul {
+  display: block;
+}
+#cssmenu .has-sub .has-sub ul {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: 0;
+}
+#cssmenu.align-right .has-sub .has-sub ul,
+#cssmenu.align-right ul ul ul {
+  left: auto;
+  right: 100%;
+}
+#cssmenu .has-sub .has-sub ul li a {
+  background: #0066CC;
+  border-bottom: 1px dotted #31b7f1;
+}
+#cssmenu .has-sub .has-sub ul li a:hover {
+  background: #0066CC;
+}
+#cssmenu ul ul li.last > a,
+#cssmenu ul ul li:last-child > a,
+#cssmenu ul ul ul li.last > a,
+#cssmenu ul ul ul li:last-child > a,
+#cssmenu .has-sub ul li:last-child > a,
+#cssmenu .has-sub ul li.last > a {
+  border-bottom: 0;
+}
