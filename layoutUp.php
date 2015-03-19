@@ -33,7 +33,7 @@
 								<ul>
 									<li><a href='formInserirUsuario.php'><span>Inserir Usuario</span></a></li>
 									<li><a href='visualizarUsuario.php'><span>Visualizar Usuario</span></a></li>
-									<li><a href='formAlteraUsuario.php'><span>Alterar Usuario</span></a></li>
+									<li><a href='alteraUsuario.php'><span>Alterar Usuario</span></a></li>
 									<li class='last'><li><a href='formGerenciaUsuario.php'><span>Gerenciar Usuario</span></a></li>
 								</ul>
 							</li>
