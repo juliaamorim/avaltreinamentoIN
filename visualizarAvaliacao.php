@@ -1,6 +1,6 @@
 <?php
 require 'layoutUp.php';
-$idAvaliacao = $_REQUEST['id'];
+$idAvaliacao = $_GET['id'];
 
 $mysqli = new mysqli('localhost','root','','avaltreinamento');
 			
