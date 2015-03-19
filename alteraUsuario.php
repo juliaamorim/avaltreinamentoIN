@@ -3,7 +3,7 @@
 	
 	include "usuario.php";
 	
-	function alterarUsuario($objUsuario) {
+	function alterarUsuarioBD($objUsuario) {
 
 		//Mock para um usuario já recuperado com id=2
 		$id_usuario = 2;

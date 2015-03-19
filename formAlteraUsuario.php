@@ -1,63 +1,94 @@
 <?php
 	require_once('scripts/functions.php');
-	require 'layoutUp.php';
-	//Acesso permitido somente a usuários de nível adminGeral ou adminDeus
-	session_validaLoginRedirect('adminGeral','adminDeus');
+    session_validaLoginRedirect('adminGeral','adminDeus');
 
-	class Empresa {
-		public $intId;
-		public $strNome;
-	}
+    include "usuario.php";
+    include "empresa.php";
 
-	function bd_printOptionsEmpresas() {
-		$objMysqli = bd_conecta();
-		
-		//Cria comando SQL
-		$strSQL = 'SELECT id, nome FROM empresas;';
-             
-        if ($objStmt = $objMysqli->prepare($strSQL)) {
-        	
-			//Executa query SQL
-			if ($objStmt->execute()) {
-				$objEmpresa = new Empresa();
+    function alterarUsuario() {
+        //Mock para um usuario já recuperado com id=2
+        $id_usuario = 2;
 
-				//Configura em que variáveis serão guardados os retornos da query
-				$objStmt->bind_result(
-					$objEmpresa->intId,
-					$objEmpresa->strNome);
-				
-				//Para cada empresa no banco de dados, imprime uma opção para ela
-				while( $objStmt->fetch() ) {
-					echo '<option id="empresa_option_'.$objEmpresa->intId.'" value="'.$objEmpresa->intId.'">'.$objEmpresa->strNome.'</option>';
-				}
-			}
+        $nome=$objUsuario->getNome();
+        $email=$objUsuario->getEmail();
+        $senha=$objUsuario->getSenha();
+        $nivel=$objUsuario->getNivel();
+        $ativo=$objUsuario->getAtivo();
+        $empresa=$objUsuario->getEmpresa();
 
-			$objStmt->close();
+
+        $strSQL = "UPDATE usuarios SET nome=?, email=?, senha=?, nivel=?, id_empresa=Coalesce($empresa), ativo=? WHERE id=?;";
+
+        $objMysqli = bd_conecta();
+
+        $objStmt = $objMysqli->prepare($strSQL);
+
+        if(!$objStmt) {
+            throw new Exception($objMysqli->errno .', ' . $objMysqli->error);
         }
 
-        //Se ocorreu algum erro, mostra mensagem de erro.
-        if($objMysqli->errno) {
-        	throw new Exception($objMysqli->errno .', ' . $objMysqli->error);
+        $objStmt->bind_param('ssssii',
+            $nome,
+            $email,
+            $senha,
+            $nivel,
+            $ativo,
+            $id_usuario);
+
+        $ok = $objStmt->execute();
+
+        if(!$ok) {
+            throw new Exception($objMysqli->errno .', ' . $objMysqli->error);
         }
 
-		//Finaliza conexão ao BD		
-		$objMysqli->close();		
-	}
+        $objStmt->close();
+        $objMysqli->close();
 
+    }
+
+        //***Chamada para visualizar o Usuário a ser editado***
+
+        $objUsuario = new Usuario();
+
+        $objUsuario->setNome(isset($_POST['nome']) ? $_POST['nome'] : null);
+        $objUsuario->setEmail(isset($_POST['email']) ? $_POST['email'] : null);
+        $objUsuario->setSenha(isset($_POST['senha']) ? $_POST['senha'] : null);
+        $objUsuario->setNivel(isset($_POST['nivel']) ? $_POST['nivel'] : null);
+        $objUsuario->setEmpresa(isset($_POST['id_empresa']) ? $_POST['id_empresa'] : null);
+        $objUsuario->setAtivo(1);
+
+        if (!$objUsuario->getNome() || !$objUsuario->getEmail() || !$objUsuario->getSenha() || !$objUsuario->getNivel() || !$objUsuario->getEmpresa()) {
+            echo 'Existe(m) campos(s) obrigatórios(s) em branco, <a href="window.history.go(-1)">clique aqui para tentar novamente</a>.';
+        }
+        else {
+            try {
+                alterarUsuario($objUsuario);
+                echo 'Usuário alterado com sucesso';
+            }
+            catch (Exception $objE) {
+                echo 'Erro: ' . $objE->getMessage();
+            }
+        }
 ?>
-<html>
+<html lang="pt-BR">
 	<head>
 		<title>Formulário de alteração de usuário</title>
 	</head>
-	<body>
-		<header>
-			<?php
-				session_printWelcomeMessage();
-                		//Mock para select default do comboBox "Nível" para usuario de nivel admin
-				$nivel="nivel_admin";
-			?>
+    <link
+        href="css/style.css"
+        title="style"
+        type="text/css"
+        rel="stylesheet"
+        media="all"
+        />
+
+    <body>
+    <?php require 'layoutUp.php';
+		//Mock para select default do comboBox "Nível" para usuario de nivel admin
+        $nivel="nivel_admin";
+    ?>
 		</header>
-		<form action="alteraUsuario.php" method="POST">
+		<form action="alterarUsuario.php" method="POST">
 			Nome: <input name='nome' type='text' required></input><br/>
 			Email: <input name='email' type='text' required></input><br/>
 			Senha: <input name='senha' type='password' required></input><br/>
@@ -119,7 +150,8 @@
 			?>			
 			<button type='submit'>Alterar</button>
 		</form>
-	</body>
-<?php
-	require 'layoutDown.php';
-?>
+    <?php
+        require 'layoutDown.php';
+    ?>
+    </body>
+</html>
