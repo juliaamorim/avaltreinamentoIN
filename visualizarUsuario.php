@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 
 <?php
-	require_once('bd.php');
-	require 'layoutUp.php';
-	require_once('functions.php');
+	require_once ('layoutUp.php');
+	require_once('scripts/functions.php');
 	session_validaLoginRedirect('adminGeral','adminDeus');
 ?>
 
