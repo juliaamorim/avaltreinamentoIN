@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php
 	require_once('scripts/functions.php');
-	require_once('scripts/bd.php');
 	//Acesso permitido somente a usuários de nível adminDeus
 	session_validaLoginRedirect('adminDeus');
 	session_printWelcomeMessage();
@@ -10,17 +9,10 @@
 		$strNome = $_POST['nome'];
 		$strStatus = $_POST['status'];
 
-		if($strNome == '' || $strStatus == ''){
-			echo 'Existem um ou mais campos em branco. Clique <a href = "insereEmpresa.php"> aqui </a> para retornar para a página anterior.';
+		if($strNome == ''){
+			echo 'Por favor, digite o nome da empresa a ser inserida. Clique <a href = "insereEmpresa.php"> aqui </a> para retornar para a página anterior.';
 		}else{
-			if($strStatus != "ativada" && $strStatus != "desativada"){
-				setaMenssagem('As opções disponíveis para o campo status são "ativada" ou "desativada". 
-				Clique <a href = "insereEmpresa.php">aqui</a> para retornar para a página anterior.', 'Fracasso');
-				imprimeMenssagem();
-			}else{
 				$mysqli = bd_conecta();
-
-				$id_empresa = default;
 				$nome = $strNome;
 				
 				if($strStatus == "ativada"){
@@ -30,16 +22,15 @@
 				}
 
 				//Cria comando SQL
-				$stmt = $msqli->prepare('INSERT INTO empresas (id_empresa, nome, ativa) VALUES (?, ?, ?);');
-				$stmt->bind_param("isi", $id_empresa, $nome, $ativa);
+				$stmt = $msqli->prepare('INSERT INTO empresas (nome, ativa) VALUES (?, ?);');
+				$stmt->bind_param("si", $nome, $ativa);
 
 				$stmt->execute();
 
 				$stmt->close();
 				$mysqli->close();
-				setaMenssagem('A empresa foi inserida com sucesso!', 'Sucesso');
+				setaMenssagem('A empresa foi inserida com sucesso!', 'sucesso');
 				imprimeMenssagem();
-			}
 		}
 	}
 ?>
@@ -48,6 +39,12 @@
 	<head>
 		<meta charset = "utf-8"/>
 		<title>Inserir Empresa</title>
+		<link 
+		href="css/style.css" 
+		title="style" 
+		type="text/css" 
+		rel="stylesheet"
+		media="all"/>
 	</head>
 
 	<body>
@@ -60,8 +57,12 @@
 
 				<br><br>
 
+				
 				<label for = "status">Status da Empresa</label>
-				<input type = "text" placeholder = "ativada/desativada" name = "status"/>
+				<select name = "status">
+					<option value = "Ativada">Ativada</option>
+					<option value = "Desativada">Desativada</option>
+				</select>
 
 				<br><br>
 
