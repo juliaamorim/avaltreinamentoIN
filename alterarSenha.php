@@ -1,5 +1,7 @@
 <?php 
 	require_once('scripts/functions.php');
+	require_once('layoutUp.php');
+	require_once('layoutDown.php');
 ?>
 
 <?php
@@ -59,18 +61,22 @@
 					$strConfNovaSenha = $_POST['confNovaSenha'];
 					
 					if($strSenhaAtual == '' || $strNovaSenha == '' || $strConfNovaSenha == ''){
-						echo 'Existe(m) campo(s) obrigatório(s) em branco, <a href="index.html">clique aqui para tentar novamente</a>';
+						echo 'Existe(m) campo(s) obrigatório(s) em branco, <a href="alterar.php">clique aqui para tentar novamente</a>';
 					} else {
 						if($strNovaSenha == $strConfNovaSenha){
 							$conexao = bd_conecta();
 							alterar_Senha($conexao, $strEmail, $strSenhaAtual, $strConfNovaSenha);
-						}
+							$strMensagem = "Sua senha foi alterada com sucesso!";
+							$strTipo = "sucesso";
+						} 
 					}
+					setaMensagem($strMensagem,$strTipo);
+					imprimeMensagem();
 				}
 			?>
 		</form><br><br>
 		
-		<button><a href="index.html">Voltar para página de login</a></button>
+		<button><a href="index.php">Voltar para página de login</a></button>
 	
 	</body>
 </html>
