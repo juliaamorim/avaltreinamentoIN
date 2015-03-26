@@ -45,8 +45,8 @@
 
 		/*ESTE TRECHO CONFIGURA O SERVIDOR*/
 		$host = "ssl://smtp.gmail.com:465";
-		$userName = 'andersonteixeira22@gmail.com'; // email do remetente
-		$password = 'ticoticonofuba'; //senha do email remetente
+		$userName = ''; // email do remetente
+		$password = ''; //senha do email remetente
 		$port = 587;
 		$secure = 'tls';
 
