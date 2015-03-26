@@ -1,5 +1,7 @@
 <?php
 	require_once('scripts/functions.php');
+	require_once('layoutUp.php');
+	require_once('layoutDown.php');
 	
 	/*ESTA FUNÇÃO GERA UMA SENHA ALEATÓRIA*/
 	function gerarNovaSenha($intTamanho = 8, $blnMaiusculas = true, $blnNumeros = true, $blnSimbolos = false){
@@ -43,8 +45,8 @@
 
 		/*ESTE TRECHO CONFIGURA O SERVIDOR*/
 		$host = "ssl://smtp.gmail.com:465";
-		$userName = ''; // email do remetente
-		$password = ''; //senha do email remetente
+		$userName = 'andersonteixeira22@gmail.com'; // email do remetente
+		$password = 'ticoticonofuba'; //senha do email remetente
 		$port = 587;
 		$secure = 'tls';
 
@@ -94,10 +96,22 @@
 
 		//CRIPTOGRAFA A SENHA GERADA PARA INSERI-LA NO BANCO DE DADOS
 		$strSenhaGerada = sha1($strSenhaGerada);
-
-		$query = "UPDATE usuarios SET senha = '$strSenhaGerada' WHERE  email = '$strEmail'";
-		$conexao->query($query);
-		$conexao->close();
+		
+		/*ESTE TRECHO DO CÓDIGO PESQUISA DENTRO BANCO DE DADOS SE O E-MAIL
+		SALVO NA VARIAVEL $strEmail EXISTE DENTRO DO MESMO*/
+		$query1 = "SELECT * FROM usuarios WHERE email = '$strEmail'";
+		$intResult = $conexao->query($query1);
+		
+		/*SE O EMAIL ESTIVER NO BANCO DE DADOS O PROGRAMA ATUALIZA A SENHA E RETORNA 1
+		CASO CONTRÁRIO RETORNA 0*/
+		if($intResult->num_rows > 0){
+			$query2 = "UPDATE usuarios SET senha = '$strSenhaGerada' WHERE  email = '$strEmail'";
+			$conexao->query($query2);
+			$conexao->close();
+			return 1;
+		} else {
+			return 0;
+		}
 	}					
 ?>
 
@@ -126,8 +140,19 @@
 				if(isset($_POST['enviar'])){
 					$strEmail = $_POST['email'];
 					$strSenhaGerada = gerarNovaSenha(8); // Definindo uma senha de 8 caracteres
-					enviarEmail($strEmail,$strSenhaGerada); 
-					atualizaSenha($strEmail, $strSenhaGerada);
+					
+					/*SE $intResult FOR MAIOR QUE ZERO ENVIA O E-MAIL
+					CAS CONTRÁRIO É PORQUE O EMAIL NÃO FOI ENCONTRADO NO
+					BANCO DE DADOS*/
+					$intResult = atualizaSenha($strEmail, $strSenhaGerada);
+					if($intResult > 0)
+						enviarEmail($strEmail,$strSenhaGerada);
+					else {
+						$strMensagem = "Endereço de e-mail não encontrado!";
+						$strTipo = "erro";
+						setaMensagem($strMensagem,$strTipo);
+						imprimeMensagem();
+					}
 				}
 			?>		
 		</form>
