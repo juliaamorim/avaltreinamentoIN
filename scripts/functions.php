@@ -20,6 +20,7 @@
 	}
 
     function bd_printOptionsEmpresas() {
+    	require_once('empresa.php');
         $objMysqli = bd_conecta();
 
         //Cria comando SQL
@@ -122,6 +123,14 @@
 	function imprimeMenssagem(){
 		//testa se tem alguma mensagem, se tiver, printa
 		if(isset($_SESSION['msg']) && isset($_SESSION['tipo'])){
+			/* Sugestão de Igor Martire para substituir todas essas linhas da função			
+			echo '<div class="'.$_SESSION['tipo'].'">';
+			echo "<strong>" . ucfirst($_SESSION['tipo']) . "</strong><br />" . $_SESSION['msg'];				
+			echo '</div>';
+			unset($_SESSION['tipo']);
+			unset($_SESSION['msg']);			
+			*/
+
 			$strClasse = "";
 			switch($_SESSION['tipo']){
 				case "info":
@@ -144,7 +153,7 @@
 							echo "<strong>Info:</strong><br />" . $_SESSION['msg'];
 							break;
 						case "sucesso":
-							echo "<strong>Successo:</strong><br />" . $_SESSION['msg'];
+							echo "<strong>Sucesso:</strong><br />" . $_SESSION['msg'];
 							break;
 						case "erro":
 							echo "<strong>Erro:</strong><br />" . $_SESSION['msg'];
@@ -160,13 +169,9 @@
 	}
 	
 	//essa função serve para setar menssagem e seu tipo. menssagem essa que será impressa no proximo caso de uso em que o usuário entrar através da função anterior, imprimeMenssagem()
-	function setaMenssagem($strMenssagem, $strTipo){
-		$_SESSION['tipo'] = strTipo;
-		$_SESSION['msg'] = strMenssagem;
+	function setaMensagem($strMenssagem, $strTipo){
+		$_SESSION['tipo'] = $strTipo;
+		$_SESSION['msg'] = $strMenssagem;
 	}
-	
-	
-	
-	
-	
+		
 ?>

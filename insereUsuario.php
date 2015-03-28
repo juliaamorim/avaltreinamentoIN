@@ -2,6 +2,9 @@
 <?php
 	require_once('scripts/functions.php');
 
+	//Acesso permitido somente a usuários de nível adminGeral ou adminDeus
+	session_validaLoginRedirect('adminGeral','adminDeus');
+
 	class Usuario {
 		public $strNome;
 		public $strEmail;
@@ -14,6 +17,7 @@
 	//Caso de Uso: Inserir Usuário
 	//TODO: Armazenar senha em HASH e valida senha usando HASH
 	function insereUsuario($objUsuario) {
+
 		$objMysqli = bd_conecta();
 		
 		//Cria comando SQL
@@ -45,47 +49,83 @@
 		$objMysqli->close();
 		
 	}
+
+	//Se a página está sendo carregada logo após o formulário ter sido preenchido e enviado.
+	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+		//Recupera informações a serem armazenadas
+		$objUsuario = new Usuario();
+		$objUsuario->strNome = (!empty($_POST['nome']) ? $_POST['nome'] : null);
+		$objUsuario->strEmail = (!empty($_POST['email']) ? $_POST['email'] : null);
+		$objUsuario->strSenha = (!empty($_POST['senha']) ? sha1($_POST['senha']) : null);
+		$objUsuario->strNivel = (!empty($_POST['nivel']) ? $_POST['nivel'] : null);
+		$objUsuario->intIdEmpresa = (!empty($_POST['id_empresa']) ? $_POST['id_empresa'] : null);
+		$objUsuario->intAtivo = 1;
+
+		//Todos os campos são obrigatórios
+		if (!$objUsuario->strNome || !$objUsuario->strEmail || !$objUsuario->strSenha || !$objUsuario->strNivel || !$objUsuario->intIdEmpresa) {
+			setaMensagem('Existe(m) campos(s) obrigatórios(s) em branco.', 'erro');
+		} 
+		else {
+			try {
+				insereUsuario($objUsuario);
+				setaMensagem('Usuário inserido com sucesso.', 'sucesso');
+			}
+			catch (Exception $objE) {
+				setaMensagem($objE->getMessage(), 'erro');
+			}
+		}
+	}
+
 ?>
-<html lang="pt-BR">
+
+<html>
 	<head>
-		<title>SAT - Sistema de Avaliação de Treinamento</title>
+		<title>Formulário de inserção de usuário</title>
 	</head>
 	<body>
-		<header>
-			<?php
-				session_printWelcomeMessage();
+		<?php require('layoutUp.php'); ?>
+		<form action="insereUsuario.php" method="POST">
+			Nome: <input name='nome' type='text' required></input><br/>
+			Email: <input name='email' type='text' required></input><br/>
+			Senha: <input name='senha' type='password' required></input><br/>
+			Nível: 
+			<select name="nivel" required>
+				<option value="aluno" selected>Aluno</option>
+				<option value="admin">Membro de RH</option>
+				<?php 
+					if ( session_validaLogin('adminDeus') ) {
+				?>
+						<option value="adminGeral">Diretor de RH</option>
+						<option value="adminDeus">Admin Deus</option>
+				<?php
+					}
+				?>				
+			</select><br/>
+			<?php 
+				if ( session_validaLogin('adminDeus') ) {
 			?>
-		</header>		
-		<nav>
+					Id_Empresa:
+					<select name="id_empresa" required>
+										
+						<?php
+							try {
+								bd_printOptionsEmpresas();							
+							}
+							catch (Exception $objE) {
+								echo '</select>';
+								setaMensagem($objE->getMessage(), 'erro');
+							}
+						?>
+						
+					</select><br/>
 			<?php
-				//Recupera informações a serem armazenadas
-				$objUsuario = new Usuario();
-				$objUsuario->strNome = (isset($_POST['nome']) ? $_POST['nome'] : null);
-				$objUsuario->strEmail = (isset($_POST['email']) ? $_POST['email'] : null);
-				$objUsuario->strSenha = (isset($_POST['senha']) ? $_POST['senha'] : null);
-				$objUsuario->strNivel = (isset($_POST['nivel']) ? $_POST['nivel'] : null);
-				$objUsuario->intIdEmpresa = (isset($_POST['id_empresa']) ? $_POST['id_empresa'] : null);
-				$objUsuario->intAtivo = 1;
-
-				//Todos os campos são obrigatórios
-				if (!$objUsuario->nome || !$objUsuario->email || !$objUsuario->senha || !$objUsuario->nivel || !$objUsuario->id_empresa) {
-					echo 'Existe(m) campos(s) obrigatórios(s) em branco, <a href="window.history.go(-1)">clique aqui para tentar novamente</a>.';
-				} 
-				else {
-					try {
-						insereUsuario($objUsuario);
-						echo 'Usuário inserido com sucesso';
-					}
-					catch (Exception $objE) {
-						echo 'Erro: ' . $objE->getMessage();
-					}
 				}
-
-				echo '<br/>';
-				echo '<br/>';
-				echo '<a href="index.php">Voltar</a>';
-
-			?>		
-		</nav>
+				else {
+					echo '<input name="id_empresa" type="hidden" value="'.$_SESSION['id_empresa'].'"></input>';
+				}
+			?>			
+			<button type='submit'>Inserir</button>
+		</form>
+		<?php require('layoutDown.php'); ?>
 	</body>
 </html>
