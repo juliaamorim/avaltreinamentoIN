@@ -1,41 +1,46 @@
 <!DOCTYPE html>
+
 <?php
 	require_once('scripts/functions.php');
 	//Acesso permitido somente a usuários de nível adminDeus
-	session_validaLoginRedirect('adminDeus');
-	session_printWelcomeMessage();
+	//session_validaLoginRedirect('adminDeus');
+	imprimeMenssagem();
+	$mysqli = bd_conecta();
 
-	if(isset($_GET['id_empresa']){
+	/*if(null != $_GET(['id_empresa'])){
 		$id_empresa = $_GET['id_empresa'];
 	}else{
 		setaMenssagem('Id da empresa não especificado. Clique  <a href = "gerenciarEmpresa.php">aqui</a>  para retornar à página anterior.', 'erro'); 
-	 	imprimeMenssagem();
-	}
+	 	header('Location: gerenciarEmpresa.php');
+	}*/
 
 	if(isset($_POST['nome']) && isset($POST['status'])){
 		$strNovoNome = $_POST['nome'];
 		$strNovoStatus = $_POST['status'];
-
+		$id_empresa = 1;
 		if($strNovoNome == '' || $strNovoStatus == ''){
 	 		setaMenssagem('Todos os campos são obrigatórios. Clique  <a href = "alteraEmpresa.php">aqui</a>  para retornar à página anterior.', 'erro'); 
-	 		imprimeMenssagem();
+	 		$mysqli->close();
+	 		header('Location: gerenciarEmpresa.php');
 		}else{
-			$sql = 'UPDATE empresas SET (id, nome, ativa) VALUES (?, ?, ?)';
-			$stmt = $mysqli->prepare($sql);
+			
+			$sql = "UPDATE empresas SET nome = $strNovoNome, status = $strNovoStatus WHERE id = $id_empresa";
+			
+			if($mysqli->query($sql) == true){
+				setaMenssagem('Empresa alterada com sucesso!', 'sucesso');
+			}else{
+				setaMenssagem('A empresa não pode ser alterada!', 'erro');
+			}
 
-			$stmt->bind_param('isi', $id_empresa, $strNome, $intAtiva);
-			$stmt->execute();
-
-			$stmt->close();
 			$mysqli->close();
-
-			setaMenssagem('Empresa alterada com sucesso!', 'Sucesso'); 
-	 		imprimeMenssagem();
+			header('Location: gerenciarEmpresa.php');
 		}
 	}else{
+		$id_empresa = 1;
 		//Obtendo os parâmetros atuais da empresa a ser alterada.
-		$mysqli = bd_conecta();
-		$strNome = $msqli->prepare('SELECT nome FROM empresas WHERE id = $intIdEmpresa;');
+		$strNome = "SELECT nome FROM empresas WHERE id = $id_empresa;";
+		echo $strNome;
+		$mysqli->close();
 	}
 ?>
 
@@ -51,15 +56,12 @@
 		media="all"/>
 </head>
 
-<body>
-
-	<center>ALTERAR EMPRESA</center>
-
+<body>		
 	<form method = "POST" action = "alteraEmpresa.php?id_empresa=id_empresa" enctype="multipart/form-data">
 		<p>Clique no campo que deseja alterar.</p>
 		<fieldset>
 			<label for = "nome">Nome da Empresa</label>
-			<input type = "text" name = "nome" value = "<?php echo $strNome; ?>" />
+			<input type = "text" name = "nome" value = "<?php print($strNome); ?>" />
 
 			<label for = "status">Status da Empresa</label>
 			<select name = "status">

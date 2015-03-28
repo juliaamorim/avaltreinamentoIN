@@ -2,8 +2,8 @@
 <?php
 	require_once('scripts/functions.php');
 	//Acesso permitido somente a usuários de nível adminDeus
-	session_validaLoginRedirect('adminDeus');
-	session_printWelcomeMessage();
+	//session_validaLoginRedirect('adminDeus');
+	imprimeMenssagem();
 
 	if(isset($_POST['nome']) && isset($POST['status'])){
 		$strNome = $_POST['nome'];
@@ -30,7 +30,7 @@
 				$stmt->close();
 				$mysqli->close();
 				setaMenssagem('A empresa foi inserida com sucesso!', 'sucesso');
-				imprimeMenssagem();
+				header('Location: gerenciarEmpresa.php');
 		}
 	}
 ?>
