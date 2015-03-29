@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 	require_once('scripts/functions.php');
 	class Usuario {
@@ -59,9 +58,9 @@
 			$objUsuario = buscaUsuario($strEmail, $strSenha);
 			//Se $usuario é null, então email e/ou senha são inválidos
 			if ( is_null($objUsuario) ) {
-				session_printWelcomeMessage();
-				echo '<br/><br/>';
-				die(htmlentities('Email e/ou senha inválidos.'));
+				include_once('layoutUp.php');
+				setaMensagem('Email e/ou senha inv&aacutelidos.', 'erro');
+				imprimeMenssagem();
 			}
 			else { 
 			//modificado para testar se o usuário está ativo na empresa
@@ -73,42 +72,27 @@
 					$_SESSION['id_empresa'] = $objUsuario->intIdEmpresa;
 					$_SESSION['ativo'] = $objUsuario->intAtivo;
 				}else{
-					session_printWelcomeMessage();
-					echo '<br/><br/>';
-					die(htmlentities('O usuário é inválido.')); //htmlentities() codifica os caracteres especiais em html
+					include_once('layoutUp.php');
+					setaMensagem('O usu&aacuterio é inv&aacutelido.', 'erro');
+					imprimeMenssagem();
 				}
 			}
 		}
 		//Preencheu somente um campo do formulário de login
 		else if ( $strEmail || $strSenha) {
-			session_printWelcomeMessage();
-			echo '<br/><br/>';
-			die('Todos os campos do formulário de login são obrigatórios.');
+			include_once('layoutUp.php');
+			setaMensagem('Todos os campos do formulário de login são obrigatórios.', 'erro');
+			imprimeMenssagem();
 		}
 	}
 	
 ?>
-<html lang="pt-BR">
-	<head> <!--htmlentities() codifica os caracteres especiais em html-->
-		<title><?php echo htmlentities('SAT - Sistema de Avaliação de Treinamento'); ?></title>
-		<link 
-		href="css/style.css" 
-		title="style" 
-		type="text/css" 
-		rel="stylesheet"
-		media="all"/>
-	</head>
-	<body>
-		<?php include('layoutUp.php'); ?>
-		<!-- <section id="main"> aberto no layoutUp-->
-		
-			<article id="content"> <!-- basicamente botar todo php que mostra página pro usuário -->
-				<?php
-				session_printWelcomeMessage();
-				?>	
-			</article> 
-		</section> <!-- fechando o <section id="main"> aberto no layoutUp-->
-		
-		<?php include('layoutDown.php'); ?>
-	</body>
-</html>
+
+<?php include_once('layoutUp.php'); ?>
+
+<?php
+	session_printWelcomeMessage();
+?>	
+			
+<?php include('layoutDown.php'); ?>
+	

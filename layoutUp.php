@@ -1,66 +1,102 @@
-<header>
-	
-		<!-- <h1> Curso HTML</h1>
-		<h2><em>IN</em><em>Junior</em></h2> -->
-</header>
-<section id="main">
-<div class="menuLogoDiv">
-		<img src="img/logo-menu.png"/>
-	</div>
-	
-	<div id='cssmenu'>
-		<ul>
-			<li class='has-sub'><a href='#'><span><img src="img/menu.png"/></span></a>
-				<ul> <!-- ul com os li e sub ul+li's, aka ul chefe -->
-					<?php
-						if(session_validaLogin() ){ //verifica se usuário está logado senão mostra somente link de login
-							// mostra opção para AdminDeus
-							if(session_validaLogin('adminDeus') ){
-							?>
-								<li class='has-sub'><a href='#'><span>Empresa</span></a>
-								<ul>
-									<li><a href='insereEmpresa.php'><span>Insere Empresa</span></a></li>
-									<li><a href='alteraEmpresa.php'><span>Altera Empresa</span></a></li>
-									<li><a href='gerenciarEmpresa.php'><span>Gerenciar Empresa.php</span></a></li>
-									<li class='last'><li><a href='gerenciaUsuario.php'><span>Gerenciar Usuario</span></a></li>
-								</ul>
-							</li>
-							<?php	
-						}
-						// mostra opção para AdminGeral e AdminDeus
-						if(session_validaLogin('adminGeral','adminDeus') ){
-							?>
-							<li class='has-sub'><a href='#'><span>Usuario</span></a>
-								<ul>
-									<li><a href='formInserirUsuario.php'><span>Inserir Usuario</span></a></li>
-									<li><a href='visualizarUsuario.php'><span>Visualizar Usuario</span></a></li>
-									<li><a href='alteraUsuario.php'><span>Alterar Usuario</span></a></li>
-									<li class='last'><li><a href='gerenciaUsuario.php'><span>Gerenciar Usuario</span></a></li>
-								</ul>
-							</li>
+<?php
+	require_once('scripts/functions.php');
+	//função para mostrar o nome do usuario na barra
+	function menu_printWelcomeMessage() {
+		if ( isset( $_SESSION['nome']) ) {
+			echo '<span>';
+			echo 'Bem-vindo, '.$_SESSION['nome']. '.</span><span>';
+			echo '<a href="alterarSenha.php"> Alterar Senha</a> | <a href="logout.php">Logout</a>' ;
+			echo '</span>';
+		}else{
+			echo '<span>';
+			echo htmlentities('Bem-vindo, Anônimo.');	//htmlentities() codifica os caracteres especiais em html
+			echo '</span><span><a href="login.php"> Login </a>';
+			echo '</span>';
+		}
+	}
+// FIM DO MEU PHP
+?>
+
+<html lang="pt-BR">
+	<head> <!--htmlentities() codifica os caracteres especiais em html-->
+		<title><?php echo htmlentities('SAT - Sistema de Avaliação de Treinamento'); ?></title>
+		<link 
+		href="css/style.css" 
+		title="style" 
+		type="text/css" 
+		rel="stylesheet"
+		media="all"/>
+	</head>
+	<body>
+		<header>
+			
+				<!-- <h1> Curso HTML</h1>
+				<h2><em>IN</em><em>Junior</em></h2> -->
+		</header>
+
+		<section id="main">
+			
+			<div id="menuTab">
+				<div style="display: table-row">
+					<!-- esquerda -->
+					<div id = 'usuarioMsg'>
+						<?php menu_printWelcomeMessage(); ?>
+					</div>
+					<!-- direita -->
+					<div id='cssmenu'>
+				
+						<ul> <!-- ul com os li e sub ul+li's, aka ul chefe -->
 							<?php
-						}
-						?>
-						<!-- mostrar para todos usuarios logados-->
-						<li class='has-sub'><a href='#'><span>Avaliacao</span></a>
-							<ul>
-								<li><a href='inserir_avaliacaoComSession.php'><span>Inserir Avaliacao</span></a></li>
-								<li><a href='visualizarAvaliacao.php'><span>Visualizar Avaliacao</span></a></li>
-								<li class='last'><a href='alterarAvaliacao.php'><span>Alterar Avaliacao</span></a></li>
-							</ul>
-						</li>
-						
-						<li class='last'><a href='logout.php'><span>Logout</span></a></li>
-						
-						<?php
-							//mostrar apenas para usuários não logados
-						}else{
-						?>
-							<li class='last'><a href='login.php'><span>Login</span></a></li>
-						<?php
-						}
-					?> 
-				</ul> <!-- fim do ul chefe -->
-			</li> <!-- fim icone do menu -->
-		</ul>
-	</div>
+								if(session_validaLogin() ){ //verifica se usuário está logado senão mostra somente link de login
+									// mostra opção para AdminDeus
+									if(session_validaLogin('adminDeus') ){
+									?>
+										<li class='has-sub'><a href='#'><span>Empresa</span></a>
+										<ul>
+											<li><a href='insereEmpresa.php'><span>Insere Empresa</span></a></li>
+											<li class='last'><li><a href='gerenciarEmpresa.php'><span>Gerenciar Empresa</span></a></li>
+										</ul>
+									</li>
+									<?php	
+								}
+								// mostra opção para AdminGeral e AdminDeus
+								if(session_validaLogin('adminGeral','adminDeus') ){
+									?>
+									<li class='has-sub'><a href='#'><span>Usu&aacuterio </span></a>
+										<ul>
+											<li><a href='visualizarUsuario.php'><span>Visualizar Usu&aacuterio </span></a></li>
+											<li><a href='insereUsuario.php'><span>Inserir Usu&aacuterio </span></a></li>
+											<li class='last'><li><a href='gerenciaUsuario.php'><span>Gerenciar Usu&aacuterio </span></a></li>
+										</ul>
+									</li>
+									<?php
+								}
+								?>
+								<!-- mostrar para todos usuarios logados-->
+								<li class='has-sub'><a href='#'><span>Avalia&ccedil&atildeo</span></a>
+									<ul>
+										<li><a href='visualizarAvaliacao.php'><span>Visualizar Avalia&ccedil&atildeo</span></a></li>
+										<?php
+										if(session_validaLogin('adminGeral','adminDeus')){
+										?>
+										<li><a href='insereAvaliacao.php'><span>Inserir Avalia&ccedil&atildeo</span></a></li>
+										<li class='last'><a href='alterarAvaliacao.php'><span>Alterar Avalia&ccedil&atildeo</span></a></li>
+										<?php
+										}
+										?>
+									</ul>
+								</li>
+								
+								<?php
+									//fechamento do menu
+								}
+							?> 
+						</ul> <!-- fim do ul chefe -->
+							
+					</div>
+				</div>
+			</div>
+			
+		<article id="content"> <!-- basicamente vai todo php que mostra página pro usuário -->
+		<!-- resto fechado no layoutDown.php	-->
+	
