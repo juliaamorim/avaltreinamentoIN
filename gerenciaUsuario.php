@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <?php
 	require_once('scripts/functions.php');
+	session_validaLoginRedirect('adminGeral', 'adminDeus');
 ?>
 <html lang="pt-BR">
 	<head>
+		<meta charset="UTF-8" />
 		<title>Login SAT</title>
 		<link 
 		href="css/style.css" 
