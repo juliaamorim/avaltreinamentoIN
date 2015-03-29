@@ -88,7 +88,7 @@
         $nivel="nivel_admin";
     ?>
 		</header>
-		<form action="alterarUsuario.php" method="POST">
+		<form action="alteraUsuario.php" method="POST">
 			Nome: <input name='nome' type='text' required></input><br/>
 			Email: <input name='email' type='text' required></input><br/>
 			Senha: <input name='senha' type='password' required></input><br/>
