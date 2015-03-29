@@ -41,6 +41,10 @@
 			<fieldset>
 				<label for = "busca">Buscar</label>
 				<input type = "text" name = "busca"/>
+				<select name="termoBusca">
+					<option value="nome" selected>Nome</option>
+					<option value="email">E-mail</option>
+				</select>
 
 				<br><br>
 				<!--<form action="gerenciaUsuario.php">-->
@@ -59,6 +63,7 @@
 		<?php	
 			if (isset ($_POST['busca']) && isset ($_POST['ativo'])){
 				$strBusca = $_POST['busca'];
+				$strTermo = $_POST['termoBusca'];
 				$tIntAtivo = $_POST['ativo'];
 
 			
@@ -72,7 +77,7 @@
 					$sql = "select * from usuarios where (ativo = '1' OR ativo = '$tIntAtivo')";
 				}
 				else {
-					$sql = "select * from usuarios where (nome ='$strBusca' AND ( ativo = '1' OR ativo = '$tIntAtivo')) ";
+					$sql = "select * from usuarios where ($strTermo ='$strBusca' AND ( ativo = '1' OR ativo = '$tIntAtivo'))";
 				}
 				if(session_validaLogin('adminGeral')){
 					$sql = $sql.' AND (id_empresa = '.$_SESSION['id_empresa'].')';
