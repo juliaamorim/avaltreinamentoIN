@@ -21,7 +21,8 @@
 								<ul>
 									<li><a href='insereEmpresa.php'><span>Insere Empresa</span></a></li>
 									<li><a href='alteraEmpresa.php'><span>Altera Empresa</span></a></li>
-									<li class='last'><a href='gerenciarEmpresa.php'><span>Gerenciar Empresa.php</span></a></li>
+									<li><a href='gerenciarEmpresa.php'><span>Gerenciar Empresa.php</span></a></li>
+									<li class='last'><li><a href='gerenciaUsuario.php'><span>Gerenciar Usuario</span></a></li>
 								</ul>
 							</li>
 							<?php	
@@ -34,7 +35,7 @@
 									<li><a href='formInserirUsuario.php'><span>Inserir Usuario</span></a></li>
 									<li><a href='visualizarUsuario.php'><span>Visualizar Usuario</span></a></li>
 									<li><a href='alteraUsuario.php'><span>Alterar Usuario</span></a></li>
-									<li class='last'><li><a href='formGerenciaUsuario.php'><span>Gerenciar Usuario</span></a></li>
+									<li class='last'><li><a href='gerenciaUsuario.php'><span>Gerenciar Usuario</span></a></li>
 								</ul>
 							</li>
 							<?php
