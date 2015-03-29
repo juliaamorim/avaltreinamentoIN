@@ -1,23 +1,61 @@
+<!DOCTYPE html>
 <?php
 	require_once('scripts/functions.php');
-	//Acesso permitido somente a usuários de nível adminGeral ou adminDeus
-	//session_validaLoginRedirect('adminGeral','adminDeus');
 ?>
-<!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 	<head>
-		<title>Gerenciar usuários</title>
-		<meta charset="UTF-8"/>
+		<title>Login SAT</title>
+		<link 
+		href="css/style.css" 
+		title="style" 
+		type="text/css" 
+		rel="stylesheet"
+		media="all"/>
+		<!-- <section id="main"> aberto no layoutUp-->
+		
+		<!-- DataTables CSS -->
+		<link rel="stylesheet" type="text/css" href="datatable/media/css/jquery.dataTables.css">
+		
+		<!-- jQuery -->
+		<script type="text/javascript" src="datatable/media/js/jquery.js"></script>
+  
+		<!-- DataTables -->
+		<script type="text/javascript" src="datatable/media/js/jquery.dataTables.js"></script>
+		
+		
+		<script type="text/javascript"> 
+		$(document).ready( function () {
+		$('#usuarioTabela').dataTable();
+		} );
+		</script>
+		
 	</head>
 	<body>
-		<header>
-			<?php
-				session_printWelcomeMessage();
-			?>
-		</header>		
-		<nav>
-			<?php	
+		<?php include('layoutUp.php'); ?>
 			
+		<article id="content" > <!-- basicamente botar todo php que mostra página pro usuário -->
+			
+		<form method = "POST" action = "gerenciaUsuario.php" enctype = "multipart/form-data">
+			<fieldset>
+				<label for = "busca">Buscar</label>
+				<input type = "text" name = "busca"/>
+
+				<br><br>
+				<!--<form action="gerenciaUsuario.php">-->
+					Incluir usuário inativos?<br>
+					<input type="radio" name="ativo" value=0>Sim<br>
+					<input type="radio" name="ativo" value=1 checked>Não<br>
+				<!--</form>-->
+
+				<br><br>
+
+				<button type = "submit" name = "enviar">Buscar</button>
+			</fieldset>
+
+		</form>
+		
+		<?php	
+			if (isset ($_POST['busca']) && isset ($_POST['ativo'])){
 				$strBusca = $_POST['busca'];
 				$tIntAtivo = $_POST['ativo'];
 
@@ -44,47 +82,62 @@
 					
 					echo 'Registros encontrados: '.$query->num_rows;
 					
-					if($query->num_rows > 0){
-						echo "<table border='1'>
+					if($query->num_rows > 0){ ?>
+
+						
+						<div><table id="usuarioTabela" class="display">
+							<thead>
 							<tr>
 								<th>Nome</th>
 								<th>Email</th>
 								<th>Nível</th>
 								<th>Ativo</th>
-							</tr>";
+								<th> </th>
+								<th> </th>
+							</tr>
+							</thead>
+							<tbody>
+							
+							<?php				
 						
-				
-						
-						while ($objDados = $query->fetch_array()) { #indexação pelo nome ou indice
-							echo "<tr>";
+						while ($objDados = $query->fetch_array()) { #indexação pelo nome ou indice ?>
+							<tr>
 
-							echo "<td>" . $objDados['nome'] . "</td>";
+							<td><?=$objDados['nome'] ?></td>
 				
-							echo "<td>" . $objDados['email'] . "</td>";
+							<td><?=$objDados['email'] ?></td>
 							
-							echo "<td>" . $objDados['nivel'] . "</td>";
+							<td><?=$objDados['nivel'] ?></td>
 							
-							switch ($objDados['ativo']){
+							<?php switch ($objDados['ativo']){
 							case 0:
 							$strAtivo = "Não";
 							break;
 							case 1:
 							$strAtivo = "Sim";
-							break;} 
+							break;} ?>
 							
-							echo "<td>" . $strAtivo . "</td>";							
+							<td><?=$strAtivo ?></td>							
 							
 
-							echo '<td><a href="alteraUsuario.php?editar='.$objDados['id'].'">Editar</a></td>';
+							<td><a href="alteraUsuario.php?editar=<?=$objDados['id'] ?>">Editar</a></td>
 							
-							echo '<td><a href="excluiUsuario.php?excluir='.$objDados['id'].'">Excluir</a></td>';
+							<td><a href="excluiUsuario.php?excluir=<?=$objDados['id'] ?>">Excluir</a></td>
+							</tr>
 							
-							echo "</tr>";
-						}
+					
+						<?php } ?>
+						</tbody>
+						</table>
+						</div> 
+						<?php
+						
 						
 						mysqli_free_result($query);
 				
 						mysqli_close($mysqli);
+						
+						
 					}
 					
 				}
@@ -92,10 +145,13 @@
 					Não foi possível realizar a busca dos dados. <a href="javascript:window.history.go(-1)">Clique aqui para tentar novamente</a>
 				<?php }
 				
-			
+			}
 		
-	?>
-	
-		</nav>
+		?>
+
+	</article> 
+		</section> <!-- fechando o <section id="main"> aberto no layoutUp-->
+		<?php include('layoutDown.php');?>
 	</body>
-</html>
+	</html>
+	
