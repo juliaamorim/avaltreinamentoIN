@@ -95,7 +95,7 @@
 	function session_printWelcomeMessage() {
 		if ( isset( $_SESSION['nome']) ) {
 			echo '<p>';
-			echo 'Bem-vindo, '.$_SESSION['nome']. '. ';
+			echo 'Bem-vindo ao sistema de Avalia&ccedil&atildeo do Treinamento, '.$_SESSION['nome']. '. ';
 			echo '<br/>';
 			echo '<a href="logout.php"> Logout </a>';
 			echo '</p>';
@@ -103,7 +103,7 @@
 			echo '<br/>'; */
 		}else{
 			echo '<p>';
-			echo htmlentities('Bem-vindo, Anônimo.');	//htmlentities() codifica os caracteres especiais em html
+			echo htmlentities('Bem-vindo ao sistema de Avaliação do Treinamento, Anônimo.');	//htmlentities() codifica os caracteres especiais em html
 			echo '<br/>';
 			echo '<a href="login.php"> Login </a>';
 			echo '</p>';
@@ -145,18 +145,18 @@
 			}
 				
 			?>
-				<div class="<?php=$strClasse?>">
+				<div class= " <?php echo $strClasse ?> " > <!-- modificado pois não escrevia o tipo no documento -->
 					<?php
 					switch($_SESSION['tipo'])
 					{
 						case "info":
-							echo "<strong>Info:</strong><br />" . $_SESSION['msg'];
+							echo "<p> <strong>Info:</strong><br />" . $_SESSION['msg'] . "</p>";
 							break;
 						case "sucesso":
-							echo "<strong>Sucesso:</strong><br />" . $_SESSION['msg'];
+							echo "<p> <strong>Sucesso:</strong><br />" . $_SESSION['msg'] . "</p>";
 							break;
 						case "erro":
-							echo "<strong>Erro:</strong><br />" . $_SESSION['msg'];
+							echo "<p> <strong>Erro:</strong><br />" . $_SESSION['msg'] . "</p>";
 							break;
 					}
 					?>
