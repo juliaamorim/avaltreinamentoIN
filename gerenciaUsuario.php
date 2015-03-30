@@ -40,7 +40,7 @@
 	$mysqli = bd_conecta();
      
 	if (mysqli_connect_errno()){
-        die('Não foi possível conectar-se ao banco de dados.<a href="formGerenciaUsuario.php"> Tente novamente</a>'/*.mysqli_connect_error()*/);
+        die('Não foi possível conectar-se ao banco de dados.<a href="gerenciaUsuario.php"> Tente novamente</a>'/*.mysqli_connect_error()*/);
     }
 	else{
 		if($strBusca == ''){
