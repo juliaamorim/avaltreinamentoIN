@@ -48,27 +48,76 @@
 
         //***Chamada para visualizar o Usuário a ser editado***
 
-        $objUsuario = new Usuario();
-
-        $objUsuario->setNome(isset($_POST['nome']) ? $_POST['nome'] : null);
-        $objUsuario->setEmail(isset($_POST['email']) ? $_POST['email'] : null);
-        $objUsuario->setSenha(isset($_POST['senha']) ? sha1($_POST['senha']) : null);
-        $objUsuario->setNivel(isset($_POST['nivel']) ? $_POST['nivel'] : null);
-        $objUsuario->setEmpresa(isset($_POST['id_empresa']) ? $_POST['id_empresa'] : null);
-        $objUsuario->setAtivo(1);
-
-        if (!$objUsuario->getNome() || !$objUsuario->getEmail() || !$objUsuario->getSenha() || !$objUsuario->getNivel() || !$objUsuario->getEmpresa()) {
-            echo 'Existe(m) campos(s) obrigatórios(s) em branco, <a href="window.history.go(-1)">clique aqui para tentar novamente</a>.';
-        }
-        else {
-            try {
-                alterarUsuario($objUsuario);
-                echo 'Usuário alterado com sucesso';
+        function buscarUsuario($intID) {
+            $objUsuario = null;
+            $objMysqli = bd_conecta();
+            
+            //Cria comando SQL
+            $strSQL = 'SELECT nome, email, nivel, id_empresa, ativo FROM usuarios WHERE id = ?;';
+                 
+            if ($objStmt = $objMysqli->prepare($strSQL)) {
+                //Preenche parâmetros SQL de forma segura
+                $objStmt->bind_param('i',$intID);
+                //Executa query SQL
+                if ($objStmt->execute()) {
+                    //Configura em que variáveis serão guardados os retornos da query
+                    $objStmt->bind_result(
+                        $nome,
+                        $email,
+                        $nivel,
+                        $empresa,
+                        $ativo);
+                    //Se não houve retorno (não achou usuario), então $objUsuario = null
+                    if( !$objStmt->fetch() ) {
+                        $objUsuario = null;
+                    }
+                }
+                $objStmt->close();
             }
-            catch (Exception $objE) {
-                echo 'Erro: ' . $objE->getMessage();
+            //Se ocorreu algum erro, mostra mensagem de erro.
+            if($objMysqli->errno) {
+                throw new Exception($objMysqli->errno .', ' . $objMysqli->error);
             }
+            //Finaliza conexão ao BD        
+            $objMysqli->close();
+            //Retorna objeto $objUsuario
+            $objUsuario = new Usuario();
+            
+            $objUsuario->setNome($nome);
+            $objUsuario->setEmail($email);
+            $objUsuario->setNivel($nivel);
+            $objUsuario->setEmpresa($empresa);
+            $objUsuario->setAtivo($ativo);
+
+            return $objUsuario;
+    }
+
+
+    $usuario_id = $_GET['editar'];
+    
+    $usuario_buscado = buscarUsuario($usuario_id);
+
+    $objUsuario = new Usuario();
+
+    $objUsuario->setNome(isset($_POST['nome']) ? $_POST['nome'] : null);
+    $objUsuario->setEmail(isset($_POST['email']) ? $_POST['email'] : null);
+    $objUsuario->setSenha(isset($_POST['senha']) ? sha1($_POST['senha']) : null);
+    $objUsuario->setNivel(isset($_POST['nivel']) ? $_POST['nivel'] : null);
+    $objUsuario->setEmpresa(isset($_POST['id_empresa']) ? $_POST['id_empresa'] : null);
+    $objUsuario->setAtivo(1);
+
+    if (!$objUsuario->getNome() || !$objUsuario->getEmail() || !$objUsuario->getSenha() || !$objUsuario->getNivel() || !$objUsuario->getEmpresa()) {
+        echo 'Existe(m) campos(s) obrigatórios(s) em branco, <a href="window.history.go(-1)">clique aqui para tentar novamente</a>.';
+    }
+    else {
+        try {
+            alterarUsuario($objUsuario);
+            echo 'Usuário alterado com sucesso';
         }
+        catch (Exception $objE) {
+            echo 'Erro: ' . $objE->getMessage();
+        }
+    }
 ?>
 <html lang="pt-BR">
 	<head>
@@ -86,15 +135,16 @@
     <body>
     <?php require 'layoutUp.php';
 		//Mock para select default do comboBox "Nível" para usuario de nivel admin
-        $nivel="nivel_admin";
+        #$nivel="nivel_admin";
+        $nivel = 'nivel_' . $usuario_buscado->getNivel();
     ?>
 		</header>
 		<form action="alteraUsuario.php" method="POST">
 			<h2>Editar Usuário</h2>
 
-            Nome: <input name='nome' type='text' required></input><br/>
-			Email: <input name='email' type='text' required></input><br/>
-			Senha: <input name='senha' type='password' required></input><br/>
+            Nome: <input name='nome' value="<?php echo $usuario_buscado->getNome() ?>" type='text' required></input><br/>
+			Email: <input name='email' type='text' value="<?php echo $usuario_buscado->getEmail() ?>" required></input><br/>
+			Senha: <input name='senha' type='password' value="<?php echo $usuario_buscado->getSenha() ?>" required></input><br/>
 			Nível:
 
             <select name="nivel" id="usuario_nivel" required>
@@ -122,7 +172,7 @@
 			<?php 
 				if ( session_validaLogin('adminDeus') ) {
 			?>
-					Id_Empresa:
+					Empresa:
 					<select name="id_empresa" required>
 										
 						<?php
@@ -134,7 +184,7 @@
 								die('Erro: ' . $objE->getMessage());
 							}
 							//Mock para select default do comboBox com empresa de usario 1
-							$empresa=1;
+							$empresa=$usuario_buscado->getEmpresa();
 						?>
 
 					</select><br/>
