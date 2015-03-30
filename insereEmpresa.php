@@ -4,33 +4,38 @@
 	//Acesso permitido somente a usuários de nível adminDeus
 	//session_validaLoginRedirect('adminDeus');
 	imprimeMenssagem();
-
-	if(isset($_POST['nome']) && isset($POST['status'])){
+	
+	if(isset($_POST['nome'])){
 		$strNome = $_POST['nome'];
 		$strStatus = $_POST['status'];
 
 		if($strNome == ''){
-			echo 'Por favor, digite o nome da empresa a ser inserida. Clique <a href = "insereEmpresa.php"> aqui </a> para retornar para a página anterior.';
+			setaMensagem('Por favor, insira um nome para a empresa.', 'erro');
+			header('Location: alteraEmpresa.php');
 		}else{
-				$mysqli = bd_conecta();
-				$nome = $strNome;
-				
-				if($strStatus == "ativada"){
-					$ativa = 1;
-				}else{
-					$ativa = 0;
-				}
+			$mysqli = bd_conecta();
+			$nome = $strNome;
+			
+			if($strStatus == "Ativada"){
+				$intAtiva = 1;
+			}else{
+				$intAtiva = 0;
+			}
 
-				//Cria comando SQL
-				$stmt = $msqli->prepare('INSERT INTO empresas (nome, ativa) VALUES (?, ?);');
-				$stmt->bind_param("si", $nome, $ativa);
-
+			//Cria e executa comando SQL
+			if($stmt = $mysqli->prepare('INSERT INTO empresas (nome, ativa) VALUES (?, ?);')){
+				$stmt->bind_param("si", $strNome, $intAtiva);
 				$stmt->execute();
-
 				$stmt->close();
 				$mysqli->close();
-				setaMenssagem('A empresa foi inserida com sucesso!', 'sucesso');
-				header('Location: gerenciarEmpresa.php');
+
+				setaMensagem('A empresa foi inserida com sucesso!', 'sucesso');
+				
+			}else{
+				setaMensagem('A empresa não pôde ser inserida.', 'erro');
+			}
+
+			header('Location: gerenciarEmpresa.php');
 		}
 	}
 ?>
@@ -50,7 +55,7 @@
 	<body>
 		<center>INSERIR EMPRESA</center>
 		<br>
-		<form method = "POST" action = "gerenciarEmpresa.php" enctype = "multipart/form-data">
+		<form id = "formulario" method = "POST" action = "insereEmpresa.php" enctype = "multipart/form-data">
 			<fieldset>
 				<label for = "nome">Nome da Empresa</label>
 				<input type = "text" name = "nome"/>
@@ -59,7 +64,7 @@
 
 				
 				<label for = "status">Status da Empresa</label>
-				<select name = "status">
+				<select form = "formulario" name = "status">
 					<option value = "Ativada">Ativada</option>
 					<option value = "Desativada">Desativada</option>
 				</select>
