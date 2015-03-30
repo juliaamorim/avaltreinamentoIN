@@ -14,8 +14,7 @@
 		public $intAtivo;
 	}
 
-	//Caso de Uso: Inserir Usuário
-	//TODO: Armazenar senha em HASH e valida senha usando HASH
+	//Caso de Uso: Inserir Usuário	
 	function insereUsuario($objUsuario) {
 
 		$objMysqli = bd_conecta();
@@ -69,6 +68,7 @@
 			try {
 				insereUsuario($objUsuario);
 				setaMensagem('Usuário inserido com sucesso.', 'sucesso');
+				header('Location: gerenciaUsuario.php');
 			}
 			catch (Exception $objE) {
 				setaMensagem($objE->getMessage(), 'erro');
@@ -78,54 +78,49 @@
 
 ?>
 
-<html>
-	<head>
-		<title>Formulário de inserção de usuário</title>
-	</head>
-	<body>
-		<?php require('layoutUp.php'); ?>
-		<form action="insereUsuario.php" method="POST">
-			Nome: <input name='nome' type='text' required></input><br/>
-			Email: <input name='email' type='text' required></input><br/>
-			Senha: <input name='senha' type='password' required></input><br/>
-			Nível: 
-			<select name="nivel" required>
-				<option value="aluno" selected>Aluno</option>
-				<option value="admin">Membro de RH</option>
-				<?php 
-					if ( session_validaLogin('adminDeus') ) {
-				?>
-						<option value="adminGeral">Diretor de RH</option>
-						<option value="adminDeus">Admin Deus</option>
+<?php require_once('layoutUp.php'); ?>
+<h2>Inserir Usu&aacute;rio</h2>
+<form action="insereUsuario.php" method="POST">
+	Nome: <input name='nome' type='text' required></input><br/>
+	Email: <input name='email' type='text' required></input><br/>
+	Senha: <input name='senha' type='password' required></input><br/>
+	N&iacute;vel: 
+	<select name="nivel" required>
+		<option value="aluno" selected>Aluno</option>
+		<option value="admin">Membro de RH</option>
+		<?php 
+			if ( session_validaLogin('adminDeus') ) {
+		?>
+				<option value="adminGeral">Diretor de RH</option>
+				<option value="adminDeus">Admin Deus</option>
+		<?php
+			}
+		?>				
+	</select><br/>
+	<?php 
+		if ( session_validaLogin('adminDeus') ) {
+	?>
+			Empresa:
+			<select name="id_empresa" required>
+								
 				<?php
+					try {
+						bd_printOptionsEmpresas();							
 					}
-				?>				
+					catch (Exception $objE) {
+						echo '</select>';
+						setaMensagem($objE->getMessage(), 'erro');
+					}
+				?>
+				
 			</select><br/>
-			<?php 
-				if ( session_validaLogin('adminDeus') ) {
-			?>
-					Id_Empresa:
-					<select name="id_empresa" required>
-										
-						<?php
-							try {
-								bd_printOptionsEmpresas();							
-							}
-							catch (Exception $objE) {
-								echo '</select>';
-								setaMensagem($objE->getMessage(), 'erro');
-							}
-						?>
-						
-					</select><br/>
-			<?php
-				}
-				else {
-					echo '<input name="id_empresa" type="hidden" value="'.$_SESSION['id_empresa'].'"></input>';
-				}
-			?>			
-			<button type='submit'>Inserir</button>
-		</form>
-		<?php require('layoutDown.php'); ?>
-	</body>
-</html>
+	<?php
+		}
+		else {
+			echo '<input name="id_empresa" type="hidden" value="'.$_SESSION['id_empresa'].'"></input>';
+		}
+	?>	
+	<br/>		
+	<button type='submit'>Inserir</button>
+</form>
+<?php require_once('layoutDown.php'); ?>
