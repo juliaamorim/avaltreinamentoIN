@@ -26,6 +26,15 @@
 		type="text/css" 
 		rel="stylesheet"
 		media="all"/>
+
+		<!-- DataTables CSS -->
+		<link rel="stylesheet" type="text/css" href="datatable/media/css/jquery.dataTables.css">
+		
+		<!-- jQuery -->
+		<script type="text/javascript" src="datatable/media/js/jquery.js"></script>
+  
+		<!-- DataTables -->
+		<script type="text/javascript" src="datatable/media/js/jquery.dataTables.js"></script>
 	</head>
 	<body>
 		<header>
