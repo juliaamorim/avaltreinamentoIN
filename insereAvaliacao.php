@@ -1,35 +1,33 @@
 <!DOCTYPE html>
 <?php
     require_once('scripts/functions.php');
-    $id = $_REQUEST['id'];
-
-    //Acesso permitido somente a usuários de nível adminGeral e usuários
-    session_validaLoginRedirect('adminDeus', 'usuario');   
+  
+    //Acesso permitido somente a usuários de nível adminGeral
+    session_validaLoginRedirect('adminDeus', 'adminGeral');   
 
     //Informa se a variável foi iniciada
     if(isset($_POST['enviar'])){ 
 
-        $nome = $_POST['nome'];
-        $descricao = $_POST['descricao'];
-        $aberta = $_POST['aberta'];
+        $strNome = $_POST['nome'];
+        $strDescricao = $_POST['descricao'];
+        $strAberta = $_POST['aberta'];
          
-        if($nome == ''){
+        if($strNome == ''){
             echo 'ATENÇÃO!! Campo NOME encontra-se vazio.';
         } 
 
-        elseif ($descricao == '') {
+        elseif ($strDescricao == '') {
             echo 'ATENÇÃO!! Campo DESCRIÇÃO encontra-se vazio.';
         }
          
-        else{
-                      
+        else{                      
                   
-            //$mysqli = bd_conecta();
-            $mysqli = new mysqli('localhost','root','','avaltreinamento');
+            $mysqli = bd_conecta();
+            //$mysqli = new mysqli('localhost','root','','avaltreinamento');
         
 
             if (mysqli_connect_errno()){
-                die('Não foi possível conectar-se ao banco de dados.<a href="inserir_avaliacaoComSession.php"> Tente novamente</a>'/*.mysqli_connect_error()*/);
+                die('Não foi possível conectar-se ao banco de dados.<a href="insereAvaliacao.php"> Tente novamente</a>'/*.mysqli_connect_error()*/);
             }
                      
             if($mysqli){
@@ -39,11 +37,11 @@
                 //Cria comando sql
                  
                 $sql = "INSERT INTO aval (nome, dt_criacao, descricao, aberta, id_empresa)"
-                ."values ('$nome', NOW(), '$descricao', '$aberta', ?)";
+                ."values ('$strNome', NOW(), '$strDescricao', '$strAberta', ?)";
 
-                  
                 $stmt = $mysqli->prepare($sql);
-                 
+                
+                $stmt->bind_param('i', $_SESSION['id_empresa']);
                  
                 $ok = $stmt->execute();
                  
@@ -56,8 +54,7 @@
                 }
                 else{
                     echo "<SCRIPT LANGUAGE=\"JavaScript\" TYPE=\"text/javascript\">
-                        alert (\"Não foi possivel inserir a avaliação, por favor, tente novamente\");
-                    </SCRIPT>";
+                        alert (\"Não foi possivel inserir a avaliação, por favor, tente novamente\");</SCRIPT>";
                      
                 }  
  
@@ -71,7 +68,9 @@
     <head>
         <title>Formulário de inserção de usuário</title>
     </head>
-   <form method='POST' action="insereAvaliacao"  enctype="multipart/form-data"> 
+    <body>
+         <?php require('layoutUp.php'); ?>
+         <form method='POST' action="insereAvaliacao.php"  enctype="multipart/form-data"> 
             <fieldset>
                 <center>
                     <legend>Inserir Avaliação</legend>
@@ -104,11 +103,13 @@
                     </select>  
                        
                     <br><br>
-                    
+
+                     <br><br>
+
                     <button type="submit" name="enviar">Inserir</button>
  
             </fieldset>
-        </form>
-        <?php require('layoutDown.php'); ?>
+         </form>
+         <?php require('layoutDown.php'); ?>
     </body>
 </html>
