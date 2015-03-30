@@ -2,6 +2,8 @@
 	require_once('scripts/functions.php');
     session_validaLoginRedirect('adminGeral','adminDeus');
 
+    include_once ('layoutUp.php');
+
     include "usuario.php";
     include "empresa.php";
 
@@ -94,7 +96,7 @@
 
 
     $usuario_id = $_GET['editar'];
-    
+
     $usuario_buscado = buscarUsuario($usuario_id);
 
     $objUsuario = new Usuario();
@@ -107,35 +109,19 @@
     $objUsuario->setAtivo(1);
 
     if (!$objUsuario->getNome() || !$objUsuario->getEmail() || !$objUsuario->getSenha() || !$objUsuario->getNivel() || !$objUsuario->getEmpresa()) {
-        echo 'Existe(m) campos(s) obrigatórios(s) em branco, <a href="window.history.go(-1)">clique aqui para tentar novamente</a>.';
+        setaMensagem('Preencha todos campos(s) em branco.',"info");
+        imprimeMenssagem();
     }
     else {
         try {
             alterarUsuario($objUsuario);
-            echo 'Usuário alterado com sucesso';
+            setaMensagem('Usuário alterado com sucesso','sucesso');
+            imprimeMenssagem();
         }
         catch (Exception $objE) {
             echo 'Erro: ' . $objE->getMessage();
         }
     }
-?>
-<html lang="pt-BR">
-	<head>
-		<title>Formulário de alteração de usuário</title>
-	</head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link
-        href="css/style.css"
-        title="style"
-        type="text/css"
-        rel="stylesheet"
-        media="all"
-        />
-
-    <body>
-    <?php require 'layoutUp.php';
-		//Mock para select default do comboBox "Nível" para usuario de nivel admin
-        #$nivel="nivel_admin";
         $nivel = 'nivel_' . $usuario_buscado->getNivel();
     ?>
 		</header>
@@ -160,13 +146,11 @@
                 ?>
             </select><br/>
             <script>
-                
-                	function changeSelectedOption(optionId) {
+                    function changeSelectedOption(optionId) {
 						var optionElement = document.getElementById(optionId);
                 		optionElement.setAttribute("selected","selected");
                 	}
                 	changeSelectedOption("<?php echo $nivel ?>");
-            
             </script>
 
 			<?php 
@@ -183,8 +167,7 @@
 								echo '</select>';
 								die('Erro: ' . $objE->getMessage());
 							}
-							//Mock para select default do comboBox com empresa de usario 1
-							$empresa=$usuario_buscado->getEmpresa();
+                            $empresa=$usuario_buscado->getEmpresa();
 						?>
 
 					</select><br/>
@@ -206,5 +189,3 @@
     <?php
         require 'layoutDown.php';
     ?>
-    </body>
-</html>
