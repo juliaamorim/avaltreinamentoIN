@@ -1,10 +1,10 @@
 <?php
 
 	require_once('scripts/functions.php');
-	require_once('scripts/bd.php');
 	//Acesso permitido somente a usuários de nível adminDeus
 	session_validaLoginRedirect('adminDeus');
 	require 'layoutUp.php';
+
 
 		
 		$mysqli = bd_conecta();
@@ -45,8 +45,6 @@
 			}
 		}
 	 
-	require 'layoutDown.php';
-	
-	
-	
+	require 'layoutDown.php';	
 ?>
+
