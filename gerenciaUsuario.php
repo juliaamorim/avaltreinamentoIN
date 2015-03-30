@@ -1,14 +1,10 @@
-<!DOCTYPE html>
 <?php
 	require_once('scripts/functions.php');
 	session_validaLoginRedirect('adminGeral', 'adminDeus');
 ?>
 <?php 
-	include_once('layoutUp.php');
- ?>
- <?php
- 	//imprimeMensagem();
- 	
+	include_once('layoutUp.php');	
+	imprimeMenssagem();
 ?>
 			
 <form method = "POST" action = "gerenciaUsuario.php" enctype = "multipart/form-data">
