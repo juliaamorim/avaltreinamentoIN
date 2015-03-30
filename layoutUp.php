@@ -19,6 +19,7 @@
 
 <html lang="pt-BR">
 	<head> <!--htmlentities() codifica os caracteres especiais em html-->
+		<meta charset="UTF-8" />
 		<title><?php echo htmlentities('SAT - Sistema de Avaliação de Treinamento'); ?></title>
 		<link 
 		href="css/style.css" 
