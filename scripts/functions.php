@@ -8,7 +8,7 @@
 	function bd_conecta() {
 		//$objMysqli = new mysqli('localhost','inJunior','inJunior','avaltreinamento'); 
 		//query usada apenas pro nicholas não reconfigurar o mysql dele =D por favor não apaguem
-		$objMysqli = new mysqli('localhost','inJunior','inJunior','avaltreinamento');
+		$objMysqli = new mysqli('localhost','root','','avaltreinamento');
 		
 		if ($objMysqli->connect_errno){ //htmlentities() codifica os caracteres especiais em html
 			die(htmlentities('Falha na conexão ao banco de dados: ').mysqli_connect_error()); 
