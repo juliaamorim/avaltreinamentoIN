@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<?php include_once("layoutUp.php"); ?>
 <?php
 	require_once('scripts/functions.php');
 	//Acesso permitido somente a usuários de nível adminDeus
@@ -66,25 +66,20 @@
 			$stmt2->fetch();
 
 			$stmt->close();
-			$stmt2->fetch();
+			$stmt2->close();
 			$mysqli->close();
 		}		
 	}
 ?>
 
-<html>
+<?php /*<html>
 <head>
 	<meta charset = "utf-8"/>
 	<title>Alterar Empresa</title>
-	<link 
-		href="css/style.css" 
-		title="style" 
-		type="text/css" 
-		rel="stylesheet"
-		media="all"/>
 </head>
+<body> */
+?>	
 
-<body>		
 	<form id = "formulario" method = "POST" action = "alteraEmpresa.php" enctype="multipart/form-data">
 		<p>Clique no campo que deseja alterar.</p>
 		<fieldset>
@@ -115,5 +110,10 @@
 			<button type = "submit" name = "confirmar">Confirmar</button>
 		</fieldset>
 	</form>
+
+<?php /*
 </body>
 </html>
+*/?>
+
+<?php include_once("layoutDown.php"); ?>
