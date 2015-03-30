@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<?php include_once("layoutUp.php"); ?>
 <?php
 	require_once('scripts/functions.php');
 	//Acesso permitido somente a usuários de nível adminDeus
@@ -11,7 +11,7 @@
 
 		if($strNome == ''){
 			setaMensagem('Por favor, insira um nome para a empresa.', 'erro');
-			header('Location: alteraEmpresa.php');
+			header('Location: insereEmpresa.php');
 		}else{
 			$mysqli = bd_conecta();
 			$nome = $strNome;
@@ -35,24 +35,18 @@
 				setaMensagem('A empresa não pôde ser inserida.', 'erro');
 			}
 
-			header('Location: gerenciarEmpresa.php');
+			header('Location: insereEmpresa.php');
 		}
 	}
 ?>
 
-<html>
+<?php /*<html>
 	<head>
 		<meta charset = "utf-8"/>
 		<title>Inserir Empresa</title>
-		<link 
-		href="css/style.css" 
-		title="style" 
-		type="text/css" 
-		rel="stylesheet"
-		media="all"/>
 	</head>
-
 	<body>
+*/ ?>
 		<center>INSERIR EMPRESA</center>
 		<br>
 		<form id = "formulario" method = "POST" action = "insereEmpresa.php" enctype = "multipart/form-data">
@@ -74,5 +68,10 @@
 				<button type = "submit" name = "confirmar">Confirmar</button>
 			</fieldset>
 		</form>
+
+<?php /*
 	</body> 
 </html>
+*/ ?>
+
+<?php include_once("layoutDown.php"); ?>
