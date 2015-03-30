@@ -1,13 +1,13 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
 html{
-    background: #666;
-	background: -moz-linear-gradient(top, #919191 0%, #333 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #919191), color-stop(100%, #333));
-	background: -webkit-linear-gradient(top, #919191 0%, #333 100%);
-	background: -o-linear-gradient(top, #919191 0%, #333 100%);
-	background: -ms-linear-gradient(top, #919191 0%, #333 100%);
-	background: linear-gradient(to bottom, #919191 0%, #333 100%);
+	background: #333;
+	background: -moz-linear-gradient(top, #999 0%, #000 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #999), color-stop(100%, #000));
+	background: -webkit-linear-gradient(top, #999 0%, #000 100%);
+	background: -o-linear-gradient(top, #999 0%, #000 100%);
+	background: -ms-linear-gradient(top, #999 0%, #000 100%);
+	background: linear-gradient(to bottom, #999 0%, #000 100%);
     /* garantir q a tag html tome o tamanho total da janela do browser */
     min-height:100%;
     /* The Magic: Pode ser necessário caso tenha uma img como bkg */
@@ -33,17 +33,8 @@ position: absolute;
 top:30px;
 left: 400px;
 }
- 
-h1{
-    margin: 0;
- 
-}
 
-p{
-	margin-bottom: 0px;
-	text-align: center;
-}
-
+ 
 header{
 
     width:850px;
@@ -55,15 +46,34 @@ header{
     box-shadow: 0px 0px 10px;
 	overflow: hidden;
 }
+
+/* Corpo principal da pagina */
  
 section#main{
 
-    background-color: #FFF;
+    background-color: #fff;
     width: 850px;
     margin: 0 auto;
     overflow: hidden;
     box-shadow: 0px 0px 10px;
 }
+
+article#content p{
+	margin-bottom: 0px;
+	text-align: center;
+}
+
+article#content a, article#content a:visited{
+	text-decoration: none;
+	color: #0066CC;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+article#content a:hover{
+	text-decoration: underline;
+}
+
 article#content{
     float:right;
     width:810px;
@@ -76,37 +86,72 @@ article#content h2{
 	text-align: center;
 }
 
-form {
-    display: block;
-    text-align: center;
+
+article#content ol{
+    list-style-position: outside;
+    list-style-type: upper-roman;
+}   
+ 
+article#content ul{
+    list-style-position: outside;
+    list-style-type: circle;
+    list-style-image: url('../img/check.gif');
 }
 
-footer{
-	height: 20px;
-	width: 834px;
+/* Div's do setaMensagem() */ 
+
+.sucesso{
+	background-color: #C3FFC3;
+	border: 2px solid  #21860E;
+}
+
+.sucesso p{
+	color: #21860E;
 	margin: 0 auto;
-	background: #666666;
-	background: -moz-linear-gradient(top, #919191 0%, #666666 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #919191), color-stop(100%, #666666));
-	background: -webkit-linear-gradient(top, #919191 0%, #666666 100%);
-	background: -o-linear-gradient(top, #919191 0%, #666666 100%);
-	background: -ms-linear-gradient(top, #919191 0%, #666666 100%);
-	background: linear-gradient(to bottom, #919191 0%, #666666 100%);
-	border-top: 2px solid  #0066CC;
-	box-shadow: 0px 1px 10px;
-	padding: 8px;
-	text-align: center;
+	padding: 10px;
+	font-weight: bold;
+	font-size: 14px;
 }
 
-footer a,footer a:visited{
-	color: #FFF;
-	text-decoration: none;
-	font-family: 'Ubuntu', sans-serif;
+.sucesso strong{
+	font-size:18px;
 }
 
-.clear{
-    clear:both;
+.info{
+	background-color: #CFEAFF;
+	border: 2px solid  #06c;
 }
+
+.info p{
+	color: #06c;
+	margin: 0 auto;
+	padding: 10px;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.info strong{
+	font-size:18px;
+}
+
+.erro{
+	background-color: #FFC3C3;
+	border: 2px solid  #E90303;
+}
+
+.erro p{
+	color: #E90303;
+	margin: 0 auto;
+	padding: 10px;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.erro strong{
+	font-size:18px;
+}
+
+/* Tabelas */
 .dados-tabulados{
     border: solid 1px #555;
     border-radius: 10px;
@@ -124,26 +169,89 @@ footer a,footer a:visited{
 .dados-tabulados tbody tr:nth-child(even){
     background-color: #CCC;
 }
-#content ol{
-    list-style-position: outside;
-    list-style-type: upper-roman;
-}   
- 
-#content ul{
-    list-style-position: outside;
-    list-style-type: circle;
-    list-style-image: url('../img/check.gif');
-} 
-/* Divs Marotas */
 
+/* Form */
 
-.menuLogoDiv{
-	float:right;
-	padding-right: 400px;
-	padding-top: 5px;
+form {
+    display: block;
+    text-align: center;
 }
 
-/*menu*/  
+/* Footer */
+
+footer{
+	height: 80px;
+	width: 834px;
+	margin: 0 auto;
+	background: #333;
+	border-top: 2px solid  #0066CC;
+	box-shadow: 0px 1px 10px;
+	padding: 8px;
+	text-align: center;
+}
+
+.footer-logo {
+	float: left;
+	padding-left:10px;
+}
+
+footer small{
+	color: #cecece;
+	font-family: 'Ubuntu', sans-serif;
+}
+
+footer small h3{
+	display:inline;
+}
+
+.clear{
+    clear:both;
+}
+
+/* Barra de Menu */
+
+#menuTab{ /* container do menu e usuario */
+	width: 100%;
+	height: 43px;
+	display: table;
+	line-height: 1;
+	background: #555;
+	background: -moz-linear-gradient(top, #666 0%, #333 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #666), color-stop(100%, #333));
+	background: -webkit-linear-gradient(top, #666 0%, #333 100%);
+	background: -o-linear-gradient(top, #666 0%, #333 100%);
+	background: -ms-linear-gradient(top, #666 0%, #333 100%);
+	background: linear-gradient(to bottom, #666 0%, #333 100%);
+	border-bottom: 2px solid  #0066CC;
+}
+
+#usuarioMsg{ /* width afeta a posição do menu css*/
+	width: 410px; 
+	display: table-cell;
+	vertical-align: middle;
+}
+
+#usuarioMsg span{
+	padding-left: 10px;
+	padding-right: 10px;
+	font-size: 12px;
+	color:#cecece;
+	font-weight: bold;
+}
+
+#usuarioMsg span a, #usuarioMsg span a.visited{
+	font-size: 11px;
+	color:#fff;
+	text-decoration: none;
+	font-weight: normal;
+}
+
+#usuarioMsg span a:hover{
+	text-decoration: underline;
+}
+
+/*menu*/ 
+ 
 #cssmenu ul,
 #cssmenu li,
 #cssmenu span,
@@ -154,16 +262,7 @@ footer a,footer a:visited{
   position: relative;
 }
 #cssmenu {
-
-  line-height: 1;
-  background: #666666;
-  background: -moz-linear-gradient(top, #919191 0%, #666666 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #919191), color-stop(100%, #666666));
-  background: -webkit-linear-gradient(top, #919191 0%, #666666 100%);
-  background: -o-linear-gradient(top, #919191 0%, #666666 100%);
-  background: -ms-linear-gradient(top, #919191 0%, #666666 100%);
-  background: linear-gradient(to bottom, #919191 0%, #666666 100%);
-  border-bottom: 2px solid  #0066CC;
+  display: table-cell;
   width: auto;
 }
 #cssmenu:after,
@@ -173,19 +272,11 @@ footer a,footer a:visited{
   clear: both;
 }
 #cssmenu a {
-  background: #666666;
-  background: -moz-linear-gradient(top, #919191 0%, #666666 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #919191), color-stop(100%, #666666));
-  background: -webkit-linear-gradient(top, #919191 0%, #666666 100%);
-  background: -o-linear-gradient(top, #919191 0%, #666666 100%);
-  background: -ms-linear-gradient(top, #919191 0%, #666666 100%);
-  background: linear-gradient(to bottom, #919191 0%, #666666 100%);
-  color: #ffffff;
-  display: block;
-  font-family: Helvetica, Arial, Verdana, sans-serif;
-  padding: 5px;
-  /*padding: 19px 20px;*/
-  text-decoration: none;
+	color: #ffffff;
+	display: block;
+	font-family: Helvetica, Arial, Verdana, sans-serif;
+	padding: 15px 15px;
+	text-decoration: none;
 }
 #cssmenu ul {
   list-style: none;
@@ -210,9 +301,9 @@ footer a,footer a:visited{
 #cssmenu.align-right ul ul {
   text-align: right;
 }
-#cssmenu > ul > li > a {
+#cssmenu > ul > li > a { /*Link do Menu Principal*/
   color: #ffffff;
-  font-size: 12px;
+  font-size: 13px;
 }
 #cssmenu > ul > li:hover:after {
   content: '';
@@ -228,9 +319,9 @@ footer a,footer a:visited{
   margin-left: -10px;
 }
 #cssmenu > ul > li:first-child > a {
-  border-radius: 5px 0 0 0;
-  -moz-border-radius: 5px 0 0 0;
-  -webkit-border-radius: 5px 0 0 0;
+  border-radius: 0 0 0 0; /* 5px 0 0 0 edição tirado arredondamento primeiro link do menu */
+  -moz-border-radius: 0 0 0 0;
+  -webkit-border-radius: 0 0 0 0;
 }
 #cssmenu.align-right > ul > li:first-child > a,
 #cssmenu.align-center > ul > li:first-child > a {
@@ -238,21 +329,22 @@ footer a,footer a:visited{
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
 }
-#cssmenu.align-right > ul > li:last-child > a {
-  border-radius: 0 5px 0 0;
-  -moz-border-radius: 0 5px 0 0;
-  -webkit-border-radius: 0 5px 0 0;
+#cssmenu.align-right > ul > li:last-child > a { /* 0 5px 0 0 edição tirado arredondamento ultimo link do menu */
+  border-radius: 0 0 0 0;
+  -moz-border-radius: 0 0 0 0;
+  -webkit-border-radius: 0 0 0 0;
 }
 #cssmenu > ul > li.active > a,
-#cssmenu > ul > li:hover > a {
+#cssmenu > ul > li:hover > a { /* link do menu sombreado*/
   color: #ffffff;
-  background: #666666;
-  background: -moz-linear-gradient(top, #919191 0%, #666666 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #919191), color-stop(100%, #666666));
-  background: -webkit-linear-gradient(top, #919191 0%, #666666 100%);
-  background: -o-linear-gradient(top, #919191 0%, #666666 100%);
-  background: -ms-linear-gradient(top, #919191 0%, #666666 100%);
-  background: linear-gradient(to bottom, #919191 0%, #666666 100%);
+  background: #111;
+  background: -moz-linear-gradient(top, #222 0%, #000 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #222), color-stop(100%, #111));
+  background: -webkit-linear-gradient(top, #222 0%, #111 100%);
+  background: -o-linear-gradient(top, #222 0%, #111 100%);
+  background: -ms-linear-gradient(top, #222 0%, #111 100%);
+  background: linear-gradient(to bottom, #222 0%, #111 100%);
+  
 }
 #cssmenu .has-sub {
   z-index: 1;
@@ -274,9 +366,9 @@ footer a,footer a:visited{
 #cssmenu .has-sub ul li {
   *margin-bottom: -1px;
 }
-#cssmenu .has-sub ul li a {
+#cssmenu .has-sub ul li a { /* Link do submenu*/
   background:  #0066CC;
-  border-bottom: 1px dotted #31b7f1;
+  border-bottom: 1px dotted #66a3e0;
   font-size: 11px;
   filter: none;
   display: block;
@@ -285,7 +377,7 @@ footer a,footer a:visited{
   color: #ffffff;
 }
 #cssmenu .has-sub ul li:hover a {
-  background: #0066CC;
+  background: #00478e;
 }
 #cssmenu ul ul li:hover > a {
   color: #ffffff;
