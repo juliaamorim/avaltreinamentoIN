@@ -52,7 +52,7 @@
 
         $objUsuario->setNome(isset($_POST['nome']) ? $_POST['nome'] : null);
         $objUsuario->setEmail(isset($_POST['email']) ? $_POST['email'] : null);
-        $objUsuario->setSenha(isset($_POST['senha']) ? $_POST['senha'] : null);
+        $objUsuario->setSenha(isset($_POST['senha']) ? sha1($_POST['senha']) : null);
         $objUsuario->setNivel(isset($_POST['nivel']) ? $_POST['nivel'] : null);
         $objUsuario->setEmpresa(isset($_POST['id_empresa']) ? $_POST['id_empresa'] : null);
         $objUsuario->setAtivo(1);
@@ -74,6 +74,7 @@
 	<head>
 		<title>Formulário de alteração de usuário</title>
 	</head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link
         href="css/style.css"
         title="style"
@@ -89,7 +90,9 @@
     ?>
 		</header>
 		<form action="alteraUsuario.php" method="POST">
-			Nome: <input name='nome' type='text' required></input><br/>
+			<h2>Editar Usuário</h2>
+
+            Nome: <input name='nome' type='text' required></input><br/>
 			Email: <input name='email' type='text' required></input><br/>
 			Senha: <input name='senha' type='password' required></input><br/>
 			Nível:
