@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+<?php include_once('layoutUp.php'); ?>
+
 <?php
     require_once('scripts/functions.php');
   
@@ -64,52 +67,42 @@
 }      
 ?>      
 
-<html>
-    <head>
-        <title>Formulário de inserção de usuário</title>
-    </head>
-    <body>
-         <?php require('layoutUp.php'); ?>
-         <form method='POST' action="insereAvaliacao.php"  enctype="multipart/form-data"> 
-            <fieldset>
-                <center>
-                    <legend>Inserir Avaliação</legend>
-                </center>
-                    <br>
-                    ATENÇÃO! 
-                    <br>
-                    *Todos os campos são obrigatórios
-                    <br><br>
-                                        
-                    <label for="nome">Nome</label>
-                    <input type="text" placeholder="Digite o nome"  name="nome" />
-                     
-                    <br><br>
-                     
-                    <label for="nome">Data de Criação:</label>
-                    <?php
-                     echo $data = date("d/m/Y"); 
-                     ?>
-                     
-                    <br><br>
- 
-                    <label for="nome">Descrição: </label>
-                    <textarea  name="descricao"  placeholder="Digite aqui" rows=5 cols=35/></textarea>
-                     
-                    <label for="nome">Status: </label>
-                    <select name="aberta">
-                        <option selected>Aberta</option>
-                        <option>Concluida</option>
-                    </select>  
-                       
-                    <br><br>
+<h2>Inserir Avaliação</h2>
+<form method='POST' action="insereAvaliacao.php"  enctype="multipart/form-data"> 
+<fieldset>
+        <br>
+        ATENÇÃO! 
+        <br>
+        *Todos os campos são obrigatórios
+        <br><br>
+                            
+        <label for="nome">Nome</label>
+        <input type="text" placeholder="Digite o nome"  name="nome" />
+         
+        <br><br>
+         
+        <label for="nome">Data de Criação:</label>
+        <?php
+         echo $data = date("d/m/Y"); 
+         ?>
+         
+        <br><br>
 
-                     <br><br>
+        <label for="nome">Descrição: </label>
+        <textarea  name="descricao"  placeholder="Digite aqui" rows=5 cols=35/></textarea>
+         
+        <label for="nome">Status: </label>
+        <select name="aberta">
+            <option selected>Aberta</option>
+            <option>Concluida</option>
+        </select>  
+           
+        <br><br>
 
-                    <button type="submit" name="enviar">Inserir</button>
- 
-            </fieldset>
-         </form>
-         <?php require('layoutDown.php'); ?>
-    </body>
-</html>
+         <br><br>
+
+        <button type="submit" name="enviar">Inserir</button>
+
+</fieldset>
+</form>
+<?php include_once('layoutDown.php'); ?>
