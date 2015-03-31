@@ -74,23 +74,22 @@
 									?>
 									<li class='has-sub'><a href='#'><span>Usu&aacuterio </span></a>
 										<ul>
-											<li><a href='visualizarUsuario.php'><span>Visualizar Usu&aacuterio </span></a></li>
+											
 											<li><a href='insereUsuario.php'><span>Inserir Usu&aacuterio </span></a></li>
-											<li class='last'><li><a href='gerenciaUsuario.php'><span>Gerenciar Usu&aacuterio </span></a></li>
+											<li class='last'><li><a href='gerenciaUsuario.php'><span>Gerenciar Usu&aacute;rio </span></a></li>
 										</ul>
 									</li>
 									<?php
 								}
 								?>
 								<!-- mostrar para todos usuarios logados-->
-								<li class='has-sub'><a href='#'><span>Avalia&ccedil&atildeo</span></a>
+								<li class='has-sub'><a href='#'><span>Avalia&ccedil;&atilde;o</span></a>
 									<ul>
-										<li><a href='visualizarAvaliacao.php'><span>Visualizar Avalia&ccedil&atildeo</span></a></li>
+										
 										<?php
 										if(session_validaLogin('adminGeral','adminDeus')){
 										?>
-										<li><a href='insereAvaliacao.php'><span>Inserir Avalia&ccedil&atildeo</span></a></li>
-										<li class='last'><a href='alterarAvaliacao.php'><span>Alterar Avalia&ccedil&atildeo</span></a></li>
+										<li><a href='insereAvaliacao.php'><span>Inserir Avalia&ccedil;&atilde;o</span></a></li>
 										<?php
 										}
 										?>
