@@ -1,8 +1,4 @@
-<?php 
-	require_once('scripts/functions.php');
-	require_once('layoutUp.php');
-	require_once('layoutDown.php');
-?>
+<?php require_once('scripts/functions.php');?>
 
 <?php
 	function alterar_Senha($conexao, $strEmail, $strSenhaAtual, $strConfNovaSenha){
@@ -52,7 +48,7 @@
 			<input type="submit" name="salvar" value="Salvar Alterações"><br>
 			
 			<?php
-				
+				require_once('scripts/functions.php');
 				if (isset($_POST['salvar'])) {
 					
 					$strEmail = $_SESSION['email'];
@@ -80,4 +76,4 @@
 	
 	</body>
 </html>
-			
+<?php require_once('layoutDown.php');?>			
