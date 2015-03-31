@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-
-<?php include_once('layoutUp.php'); ?>
-
 <?php
     require_once('scripts/functions.php');
   
@@ -9,100 +6,124 @@
     session_validaLoginRedirect('adminDeus', 'adminGeral');   
 
     //Informa se a variável foi iniciada
-    if(isset($_POST['enviar'])){ 
+    if(isset($_POST['enviar'])){
 
         $strNome = $_POST['nome'];
         $strDescricao = $_POST['descricao'];
-        $strAberta = $_POST['aberta'];
+       // $strAberta = $_POST['aberta']
+       
+        $strStatus = $_POST['status'];
          
-        if($strNome == ''){
-            echo 'ATENÇÃO!! Campo NOME encontra-se vazio.';
-        } 
 
-        elseif ($strDescricao == '') {
-            echo 'ATENÇÃO!! Campo DESCRIÇÃO encontra-se vazio.';
+        if(!$strNome || !$strDescricao){
+            if($strNome == '' && $strDescricao == '' ){
+                setaMensagem ('ATENÇÃO!! Campos NOME e DESCRIÇÃO encontra-se vazio.',"erro");
+            } 
+
+            elseif ($strDescricao == '') {
+                setaMensagem ('ATENÇÃO!! Campo DESCRIÇÃO encontram-se vazios.',"erro");
+            }else{
+                setaMensagem ('ATENÇÃO!! Campo NOME encontra-se vazio.',"erro");
+            }
         }
          
         else{                      
                   
             $mysqli = bd_conecta();
             //$mysqli = new mysqli('localhost','root','','avaltreinamento');
-        
+            
+            $intAberta = 0;
+
+            if($strStatus == "Aberta"){
+                $intAberta = 1;
+            }
 
             if (mysqli_connect_errno()){
                 die('Não foi possível conectar-se ao banco de dados.<a href="insereAvaliacao.php"> Tente novamente</a>'/*.mysqli_connect_error()*/);
             }
                      
             if($mysqli){
-                 
-                mysqli_set_charset($mysqli, 'utf8');
 
                 //Cria comando sql
                  
                 $sql = "INSERT INTO aval (nome, dt_criacao, descricao, aberta, id_empresa)"
-                ."values ('$strNome', NOW(), '$strDescricao', '$strAberta', ?)";
+                ."values ('$strNome', NOW(), '$strDescricao', ?, ?)";
 
                 $stmt = $mysqli->prepare($sql);
+
+                /* if(!$stmt) {
+                    throw new Exception($mysqli->errno .', ' . $mysqli->error);
+                } */
+
+                $stmt->bind_param('ii', $intAberta, $_SESSION['id_empresa']);
                 
-                $stmt->bind_param('i', $_SESSION['id_empresa']);
-                 
                 $ok = $stmt->execute();
+
+                /* if(!$ok) {          
+                    throw new Exception($objMysqli->errno .', ' . $objMysqli->error);
+                } */
                  
-                if($ok){ ?>
-                    <SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">
-                        alert ("Avaliação inserida com sucesso");
-                    </SCRIPT>
- 
-                <?php
+                if($ok){ 
+                        setaMensagem ("Avaliação inserida com sucesso","sucesso");
                 }
                 else{
-                    echo "<SCRIPT LANGUAGE=\"JavaScript\" TYPE=\"text/javascript\">
-                        alert (\"Não foi possivel inserir a avaliação, por favor, tente novamente\");</SCRIPT>";
-                     
+                    
+                        setaMensagem ("Não foi possivel inserir a avaliação, por favor, tente novamente","erro");
                 }  
  
-                mysqli_close($mysqli);
+                //Finaliza conexão ao BD
+                $stmt->close();
+                $mysqli->close();
+                
             }
         }
 }      
 ?>      
 
-<h2>Inserir Avaliação</h2>
-<form method='POST' action="insereAvaliacao.php"  enctype="multipart/form-data"> 
-<fieldset>
-        <br>
-        ATENÇÃO! 
-        <br>
-        *Todos os campos são obrigatórios
-        <br><br>
-                            
-        <label for="nome">Nome</label>
-        <input type="text" placeholder="Digite o nome"  name="nome" />
-         
-        <br><br>
-         
-        <label for="nome">Data de Criação:</label>
-        <?php
-         echo $data = date("d/m/Y"); 
-         ?>
-         
-        <br><br>
+<html>
+    <head>
+        <title>Formulário de inserção de usuário</title>
+    </head>
+    <body>
+         <?php require('layoutUp.php'); ?>
+         <?php imprimeMenssagem(); ?>
+         <h2>Inserir Avaliação</h2>
+         <form method='POST' action="insereAvaliacao.php"  enctype="multipart/form-data"> 
+            <fieldset>
+                    <br>
+                    ATENÇÃO! 
+                    <br>
+                    *Todos os campos são obrigatórios
+                    <br><br>
+                                        
+                    <label for="nome">Nome</label>
+                    <input type="text" placeholder="Digite o nome"  name="nome" />
+                     
+                    <br><br>
+                     
+                    <label for="nome">Data de Criação:</label>
+                    <?php
+                     echo $data = date("d/m/Y"); 
+                     ?>
+                     
+                    <br><br>
+ 
+                    <label for="nome">Descrição: </label>
+                    <textarea  name="descricao"  placeholder="Digite aqui" rows=5 cols=35/></textarea>
+                     
+                    <label for="nome">Status: </label>
+                    <select name="status">
+                        <option value = "Aberta" selected>Aberta</option> 
+                        <option value = "Fechada">Fechada</option>
 
-        <label for="nome">Descrição: </label>
-        <textarea  name="descricao"  placeholder="Digite aqui" rows=5 cols=35/></textarea>
-         
-        <label for="nome">Status: </label>
-        <select name="aberta">
-            <option selected>Aberta</option>
-            <option>Concluida</option>
-        </select>  
-           
-        <br><br>
+                    </select>  
+                       
+                    <br><br>
 
-         <br><br>
-
-        <button type="submit" name="enviar">Inserir</button>
-
-</fieldset>
-</form>
-<?php include_once('layoutDown.php'); ?>
+                    <button type="submit" name="enviar">Inserir</button>
+ 
+            </fieldset>
+         </form>
+         <?php require('layoutDown.php'); ?>
+    </body>
+</html>
