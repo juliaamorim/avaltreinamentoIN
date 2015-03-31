@@ -1,8 +1,7 @@
+<?php require_once('layoutUp.php');?>
+	
 <?php
 	require_once('scripts/functions.php');
-	require_once('layoutUp.php');
-	require_once('layoutDown.php');
-	
 	/*ESTA FUNÇÃO GERA UMA SENHA ALEATÓRIA*/
 	function gerarNovaSenha($intTamanho = 8, $blnMaiusculas = true, $blnNumeros = true, $blnSimbolos = false){
 		// Caracteres de cada tipo
@@ -46,7 +45,7 @@
 		/*ESTE TRECHO CONFIGURA O SERVIDOR*/
 		$host = "ssl://smtp.gmail.com:465";
 		$userName = ''; // email do remetente
-		$password = ''; //senha do email remetente
+		$password = ''; //senha do email remetente 
 		$port = 587;
 		$secure = 'tls';
 
@@ -73,7 +72,7 @@
 		$mail->CharSet = 'utf-8';
 
 		$mail->Subject = 'Enviando E-mails com PHPMailer'; // ASSUNTO DO E-MAIL
-		$mail->Body = '<strong>Nova Senha: </strong>' ."$strSenhaGerada"; // CORPO DO E-MAIL COM HTML
+		$mail->Body = '<strong>Sua senha foi alterada para:</strong>' ."$strSenhaGerada" .'<br><br><strong>Por Favor troque assim que possível.</strong>'; // CORPO DO E-MAIL COM HTML
 		$mail->AltBody = 'Enviando e-mail em texto plano'; // CORPO DO E-MAIL CASO NÃO TENHA SUPORTE AO HTML
 
 		$send = $mail->Send(); // COMANDO PARA ENVIAR O E-MAIL
@@ -158,3 +157,4 @@
 		</form>
 	</body>
 </html>
+<?php require_once('layoutDown.php');?>
